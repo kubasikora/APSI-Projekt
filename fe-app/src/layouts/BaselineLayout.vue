@@ -2,6 +2,7 @@
   <v-app id="inspire">
     <v-navigation-drawer
       v-model="showDrawer"
+      temporary
       app
     >
       <v-list dense>
@@ -64,19 +65,19 @@
         </v-row>
       </v-container>
     </v-content>
-    <v-footer
-      color="primary"
-      app
-    >
-      <span class="white--text">&copy; 2020 Architektura i Projektowanie Systemów Informatycznych</span>
-    </v-footer>
+    <Footer />
   </v-app>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
+import Footer from "@/components/Footer.vue";
 
-@Component
+@Component({
+  components: {
+    Footer
+  }
+})
 export default class BaselineLayout extends Vue {
   private title: String = "Helpado";
   private showDrawer: boolean = false;

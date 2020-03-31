@@ -5,7 +5,7 @@
       color="primary"
     >
       <v-img src="@/assets/logo.png" class="logo" />
-      <v-toolbar-title class="white--text">Helpado</v-toolbar-title>
+      <v-toolbar-title class="white--text">{{ headerTitle }}</v-toolbar-title>
     </v-app-bar>
 
     <v-content>
@@ -35,22 +35,23 @@
         </v-row>
       </v-container>
     </v-content>
-    <v-footer
-      app
-      color="primary"
-    >
-      <span class="white--text">&copy; 2020 Architektura i Projektowanie Systemów Informatycznych</span>
-    </v-footer>
+    <Footer />
   </v-app>
 </template>
 
-<script>
-  export default {
-    props: {
-      title: String,
-      source: String,
-    },
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import Footer from "@/components/Footer.vue";
+ 
+@Component({
+  components: {
+    Footer
   }
+})
+export default class CenteredLayout extends Vue {
+  private headerTitle: String = "Helpado";
+  @Prop({required: true}) title: String; 
+};
 </script>
 
 <style scoped>
