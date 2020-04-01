@@ -5,38 +5,7 @@
       temporary
       app
     >
-      <v-list dense>
-        <v-list-item link>
-          <v-list-item-action>
-            <v-icon>mdi-home</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Home</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item link>
-          <v-list-item-action>
-            <v-icon>mdi-mail</v-icon>
-          </v-list-item-action>
-          <v-list-drawer
-          <v-list-item-content>
-            <v-list-item-title>Contact</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-navigation-drawer/>
-
-        <v-list-item link>
-          <v-list-item-action>
-            <v-icon>mdi-logout</v-icon>
-          </v-list-item-action>
-          <v-list-drawer
-          <v-list-item-content>
-            <v-list-item-title>Wyloguj</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
+      <NavMenu></NavMenu>
     </v-navigation-drawer>
 
     <v-app-bar
@@ -52,13 +21,10 @@
 
     <v-content>
       <v-container
-        class="fill-height"
+        class="fill-heights"
         fluid
       >
-        <v-row
-          align="center"
-          justify="center"
-        >
+        <v-row>
           <v-col>
             <slot></slot>
           </v-col>
@@ -72,10 +38,12 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Footer from "@/components/Footer.vue";
+import NavMenu from "@/components/NavMenu.vue";
 
 @Component({
   components: {
-    Footer
+    Footer,
+    NavMenu
   }
 })
 export default class BaselineLayout extends Vue {

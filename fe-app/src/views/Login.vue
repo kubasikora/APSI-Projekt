@@ -1,39 +1,28 @@
 <template>
   <CenteredLayout title="Zaloguj się w Helpado">
-    <v-card-text>
-      <v-form>
-        <v-text-field
-          label="Login"
-          name="login"
-          type="text"
-        />
-
-        <v-text-field
-          id="password"
-          label="Hasło"
-          name="password"
-          type="password"
-        />
-      </v-form>
-    </v-card-text>
-    <v-card-actions>
-      <v-spacer />
-      <v-btn color="accent">Zarejestruj</v-btn>
-      <v-btn color="primary">Zaloguj</v-btn>
-    </v-card-actions>
+      <LoginForm />
+      <template v-slot:actions>
+        <v-spacer />
+        <v-btn color="accent"> Zarejestruj</v-btn>
+        <v-btn color="primary" @click="login">Zaloguj</v-btn>
+      </template>
   </CenteredLayout>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import CenteredLayout from "@/layouts/CenteredLayout.vue";
+import LoginForm from "@/components/LoginForm.vue";
 
 @Component({
   components: {
-    CenteredLayout
+    CenteredLayout,
+    LoginForm
   }
 })
 export default class LoginView extends Vue {
-
+  public login(): void {
+    this.$router.push({name: "Landing page"});
+  }
 };
 </script>
