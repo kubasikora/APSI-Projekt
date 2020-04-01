@@ -3,7 +3,7 @@
       <LoginForm />
       <template v-slot:actions>
         <v-spacer />
-        <v-btn color="accent"> Zarejestruj</v-btn>
+        <v-btn color="accent" @click="register"> Zarejestruj</v-btn>
         <v-btn color="primary" @click="login">Zaloguj</v-btn>
       </template>
   </CenteredLayout>
@@ -23,6 +23,9 @@ import LoginForm from "@/components/LoginForm.vue";
 export default class LoginView extends Vue {
   public login(): void {
     this.$router.push({name: "Landing page"});
+  }
+  public register(): void {
+    this.$router.push({name: "Registration page"});
   }
 };
 </script>

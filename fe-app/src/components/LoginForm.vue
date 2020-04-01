@@ -1,9 +1,9 @@
 <template>
   <v-form>
     <v-text-field
-      label="Login"
-      name="login"
-      type="text"
+      label="Email"
+      name="email"
+      type="email"
     />
 
     <v-text-field
