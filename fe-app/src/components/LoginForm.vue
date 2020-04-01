@@ -1,0 +1,25 @@
+<template>
+  <v-form>
+    <v-text-field
+      label="Login"
+      name="login"
+      type="text"
+    />
+
+    <v-text-field
+      id="password"
+      label="Hasło"
+      name="password"
+      type="password"
+    />
+  </v-form>
+</template>
+
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+
+@Component
+export default class LoginForm extends Vue {
+
+};
+</script>
