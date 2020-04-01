@@ -11,8 +11,12 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { namespace } from "vuex-class";
 import CenteredLayout from "@/layouts/CenteredLayout.vue";
 import LoginForm from "@/components/LoginForm.vue";
+import LoginCredentials from "@/models/LoginCredentials";
+
+const login = namespace("Login");
 
 @Component({
   components: {
@@ -21,8 +25,16 @@ import LoginForm from "@/components/LoginForm.vue";
   }
 })
 export default class LoginView extends Vue {
+  @login.State
+  public credentials: LoginCredentials;
+
+  @login.Action
+  public resetCredentials: () => void
+
   public login(): void {
+    alert(`Email: ${this.credentials.email}, Hasło: ${this.credentials.password}`);
     this.$router.push({name: "Landing page"});
+    this.resetCredentials();
   }
   public register(): void {
     this.$router.push({name: "Registration page"});
