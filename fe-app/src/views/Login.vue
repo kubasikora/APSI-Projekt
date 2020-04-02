@@ -25,16 +25,14 @@ const login = namespace("Login");
   }
 })
 export default class LoginView extends Vue {
-  @login.State
-  public credentials: LoginCredentials;
-
   @login.Action
-  public resetCredentials: () => void
+  public logUsingCredentials: () => Promise<boolean>
 
-  public login(): void {
-    alert(`Email: ${this.credentials.email}, Hasło: ${this.credentials.password}`);
-    this.$router.push({name: "Landing page"});
-    this.resetCredentials();
+  public async login(): Promise<void> {
+    const response = await this.logUsingCredentials();
+    if(response){
+      this.$router.push({name: "Landing page"});
+    }
   }
   public register(): void {
     this.$router.push({name: "Registration page"});
