@@ -44,6 +44,16 @@
             counter
             @click:append="show2 = !show2"
           ></v-text-field>
+
+           <v-radio-group>
+          <v-radio
+            v-for="r in roles"
+            :key="r"
+            :label="`${r}`"
+            :value="r"
+             v-model="role"
+          ></v-radio>
+           </v-radio-group>
   </v-form>
 </template>
 
@@ -62,7 +72,8 @@ export default class RegistrationForm extends Vue {
         show2: false,
         password1: '',
         password2: '',
-        checkPasswords: false,
+        role: '',
+        roles: ["wolontariusz", "odbiorca pomocy"],
         rules: {
           required: (value: string) => !! value || 'Wymagane',
           min: (v: string) =>  v.length >= 8 || 'Hasło musi zawierać min. 8 znaków',
