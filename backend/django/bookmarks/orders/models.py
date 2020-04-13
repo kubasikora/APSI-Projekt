@@ -9,3 +9,5 @@ class Order(models.Model):
                                on_delete=models.SET_NULL, null=True)
     volunteer = models.ForeignKey(User, related_name='tasks',
                                   on_delete=models.SET_NULL, null=True, blank=True)
+    coord_x = models.FloatField(default=0)
+    coord_y = models.FloatField(default=0)

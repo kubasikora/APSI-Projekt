@@ -8,4 +8,5 @@ class OrderSerializer(serializers.ModelSerializer):
     boomer = serializers.ReadOnlyField(source='boomer.username')
     class Meta:
         model = Order
-        fields = ('description', 'boomer', 'volunteer')
+        #fields = ('description', 'boomer', 'volunteer')
+        fields = '__all__'
