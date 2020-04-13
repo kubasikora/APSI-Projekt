@@ -1,2 +1,3 @@
-django/venv
-django/.idea
+backend/django/venv
+.idea
+__pycache__
