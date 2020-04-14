@@ -2,9 +2,11 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from rest_framework import status, views
 from rest_framework.response import Response
-from .serializers import UserSerializer
+from .serializers import UserSerializer, ProfileSerializer
 from rest_framework import status, generics
 from django.contrib.auth.models import User
+from rest_framework import generics
+from .models import Profile
 
 
 class LoginView(views.APIView):
@@ -26,3 +28,7 @@ class LogoutView(views.APIView):
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+class ProfileList(generics.ListCreateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer

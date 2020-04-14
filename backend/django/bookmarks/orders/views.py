@@ -1,10 +1,6 @@
-from rest_framework.viewsets import ModelViewSet
 from .serializers import OrderSerializer
 from .models import Order
-from django.contrib.auth.models import User
-from rest_framework.views import APIView
-from rest_framework import status, mixins, generics
-from rest_framework.response import Response
+from rest_framework import generics
 
 # Create your views here.
 class OrderList(generics.ListCreateAPIView):
@@ -12,7 +8,11 @@ class OrderList(generics.ListCreateAPIView):
     serializer_class = OrderSerializer
 
     def perform_create(self, serializer):
-        serializer.save(boomer=self.request.user)
+        try:
+            profile = self.request.user.profile
+        except:
+            raise ValueError('user {} does not have a profile'.format(self.request.user.get_username()))
+        serializer.save(boomer=self.request.user.profile)
 
 class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Order.objects.all()
