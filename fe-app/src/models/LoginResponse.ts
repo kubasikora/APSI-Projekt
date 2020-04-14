@@ -1,4 +1,4 @@
-export default class LoginServiceResponse {
+export default class LoginResponse {
     constructor(state: Boolean, responseCode: Number, message: String){
         this.state = state;
         this.responseCode = responseCode;

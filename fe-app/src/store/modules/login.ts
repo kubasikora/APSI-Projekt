@@ -1,7 +1,8 @@
 import { VuexModule, Module, Mutation, Action } from "vuex-module-decorators";
 import LoginCredentials from "@/models/LoginCredentials";
-import LoginServiceResponse from "@/models/LoginServiceResponse";
+import LoginResponse from "@/models/LoginResponse";
 import LoginService from "@/services/LoginService";
+import LogoutResponse from '@/models/LogoutResponse';
 
 @Module({namespaced: true})
 export default class Login extends VuexModule {
@@ -49,19 +50,28 @@ export default class Login extends VuexModule {
   }
 
   @Action
-  async logUsingCredentials(): Promise<boolean> {
+  async logUsingCredentials(): Promise<Boolean> {
     this.context.commit("setLoadingState", true);
 
     const srv: LoginService = new LoginService();
-    const response: LoginServiceResponse = await srv.login(this.credentials);
+    const response: LoginResponse = await srv.login(this.credentials);
     this.context.dispatch("resetCredentials");
     
     this.context.commit("setLoadingState", false);
-    if(response.state)
-      return true;
-    else {
+    if(!response.state)
       this.context.commit("setErrorMessage", response.message);
-      return false;
-    } 
+
+    return response.state;
+  }
+
+  @Action
+  async logout(): Promise<Boolean> {
+    const srv: LoginService = new LoginService();
+    const response: LogoutResponse = await srv.logout();
+    if(!response.state){
+      alert("Wylogowanie nie powiodło się, spróbuj jeszcze raz");
+    }
+
+    return response.state;
   }
 };

@@ -20,7 +20,7 @@
       </v-list-item-content>
     </v-list-item>
     
-    <v-list-item link :to="'/'">
+    <v-list-item @click="logoutUser">
       <v-list-item-action>
         <v-icon>mdi-logout</v-icon>
       </v-list-item-action>
@@ -33,10 +33,21 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { namespace } from "vuex-class";
+
+const login = namespace("Login");
 
 @Component
 export default class NavMenu extends Vue {
+  @login.Action
+  public logout: () => Promise<Boolean>
 
+  public async logoutUser(): Promise<void> {
+    const response = await this.logout();
+    if(response){
+      this.$router.push({name: "Login"});
+    }
+  }
 };
 </script>
 

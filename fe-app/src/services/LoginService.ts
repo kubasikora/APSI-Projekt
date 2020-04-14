@@ -1,5 +1,6 @@
 import LoginCredentials from "@/models/LoginCredentials";
-import LoginServiceResponse from "@/models/LoginServiceResponse";
+import LoginResponse from "@/models/LoginResponse";
+import LogoutResponse from "@/models/LogoutResponse"
 import apiClient from "@/api";
 
 interface APILoginCredentials {
@@ -8,17 +9,28 @@ interface APILoginCredentials {
 }
 
 export default class LoginService {
-    public async login(credentials: LoginCredentials): Promise<LoginServiceResponse> {
+    public async login(credentials: LoginCredentials): Promise<LoginResponse> {
         try {
             const data: APILoginCredentials = {
                 username: credentials.email,
                 password: credentials.password
             };
-            await apiClient.post("/account/login", data);
-            return new LoginServiceResponse(true, 200, "Authorized");
+            const response = await apiClient.post("/account/login", data);
+            return new LoginResponse(true, response.status, response.statusText);
+        } catch(err) {
+            const response = err.response;
+            return new LoginResponse(false, response.status, response.statusText);
+        }
+    }
+
+    public async logout(): Promise<LogoutResponse> {
+        try {
+            const response = await apiClient.get("/account/logout");
+            console.log(response);
+            return new LogoutResponse(true, 200, "Logged out");
         } catch(err) {
             console.log(err.response.data);
-            return new LoginServiceResponse(false, 403, "Unauthorized");
+            return new LoginResponse(false, 403, "Logging out failed");
         }
     }
 };
