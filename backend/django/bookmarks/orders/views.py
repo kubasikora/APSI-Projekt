@@ -4,7 +4,7 @@ from .serializers import OrderSerializer
 from .models import Order
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter
+from rest_framework.filters import OrderingFilter, SearchFilter
 from django_filters import rest_framework as filters
 
 class OrderFilter(FilterSet):
@@ -39,7 +39,8 @@ class OrderFilter(FilterSet):
 class OrderList(generics.ListCreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    filter_backends = (DjangoFilterBackend, SearchFilter)
+    filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter)
+    filter_class = OrderFilter
     filter_fields = ('coord_x','coord_y',)
     ordering_fields = ('coord_x','coord_y',)
     ordering = ('id','coord_x','coord_y',)
@@ -58,7 +59,6 @@ class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class OrderInRadius(generics.ListAPIView):
     serializer_class = OrderSerializer
-    filter_class = OrderFilter
     lookup_url_kwarg_id = "pk"
     lookup_url_kwarg_dist = "dist"
 
@@ -68,14 +68,14 @@ class OrderInRadius(generics.ListAPIView):
         orders = Order.objects.filter(pk=uid).values()
         coord_x_source = orders.values_list('coord_x', flat=True).last()
         coord_y_source = orders.values_list('coord_y', flat=True).last()
-        orders = Order.objects.filter(coord_x__gt=str(coord_x_source-float(dist)), coord_x__lt=str(coord_x_source+float(dist)),
-                                      coord_y__gt=str(coord_y_source-float(dist)), coord_y__lt=str(coord_y_source+float(dist)))
+        orders = Order.objects.all()
         idx = []
         for order in orders:
             coord_x_des = order.coord_x
             coord_y_des = order.coord_y
             dist_cal = sqrt((coord_x_source - coord_x_des)**2 + (coord_y_source - coord_y_des)**2)
-            if dist_cal <= float(dist) and order.pk != int(uid):
+            print(dist_cal)
+            if dist_cal <= int(dist) and order.pk != int(uid):
                 idx.append(order.pk)
 
         orders = Order.objects.filter(id__in=idx)
