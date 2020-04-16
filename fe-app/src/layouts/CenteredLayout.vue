@@ -27,19 +27,13 @@
         </v-row>
       </v-container>
     </v-content>
-    <Footer />
   </v-app>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import Footer from "@/components/Footer.vue";
  
-@Component({
-  components: {
-    Footer
-  }
-})
+@Component
 export default class CenteredLayout extends Vue {
   private headerTitle: String = "Helpado";
   @Prop({required: true}) title: String; 
