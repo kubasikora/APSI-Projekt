@@ -1,3 +1,4 @@
 backend/django/venv
+backend/django/bookmarks/venv
 .idea
 __pycache__
