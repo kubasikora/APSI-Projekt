@@ -38,17 +38,6 @@
             @click:append="show1 = !show1"
             @input="setPassword"
           ></v-text-field>
-    <v-text-field
-            v-model="password2"
-            :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="[rules.required, rules.passwordMatch]"
-            :type="show2 ? 'text' : 'password'"
-            name="password2"
-            label="Powtórz hasło"
-            counter
-            @click:append="show2 = !show2"
-          ></v-text-field>
-
            <v-radio-group row>
           <v-radio
             v-for="r in roles"
@@ -57,6 +46,7 @@
             @mouseup="setRole(r)"
           ></v-radio>
            </v-radio-group>
+           <v-alert v-if="errorMessage" border="left" colored-border type="error" elevation="2">{{ errorMessage }}</v-alert>
   </v-form>
 </template>
 
@@ -70,6 +60,9 @@ const register = namespace("Registration");
 export default class RegistrationForm extends Vue {
     @register.State
     public userData: RegistrationData
+
+    @register.State
+    public errorMessage: String
 
     @register.Action
     public setName: (newName: String) => void
@@ -91,14 +84,11 @@ export default class RegistrationForm extends Vue {
      data () {
       return {
         show1: false,
-        show2: false,
-        password2: '',
         role: '',
         roles: ["wolontariusz", "odbiorca pomocy"],
         rules: {
           required: (value: string) => !! value || 'Wymagane',
           min: (v: string) =>  v.length >= 8 || 'Hasło musi zawierać min. 8 znaków',
-          passwordMatch: ( v: string, checkPasswords: Boolean) => !(!(v == this.userData.password) && checkPasswords) || "Hasła muszą byc takie same"
         },
       }
     }

@@ -71,7 +71,7 @@ export default class Registration extends VuexModule {
     }
  @Action
  setPassword(newPassword: String){
-    const newData: RegistrationData = new RegistrationData(this.userData.name, this.userData.lastName, this.userData.phone, this.userData.email, this.userData.password, this.userData.role)
+    const newData: RegistrationData = new RegistrationData(this.userData.name, this.userData.lastName, this.userData.phone, this.userData.email, newPassword, this.userData.role)
     this.context.commit("setNewData", newData);
     if(this.errorMessage){
       this.context.commit("setErrorMessage", "");
@@ -83,6 +83,21 @@ export default class Registration extends VuexModule {
   resetData(){
     const newData: RegistrationData = new RegistrationData("", "", "","","","");
     this.context.commit("setNewData", newData);
+  }
+
+  @Action
+  async registerNewAccount(): Promise<Boolean> {
+    this.context.commit("setLoadingState", true);
+    console.log('action')
+    const srv: RegistrationService = new RegistrationService();
+    const response: RegistrationServiceResponse = await srv.register(this.userData);
+    this.context.dispatch("resetData");
+    
+    this.context.commit("setLoadingState", false);
+    if(!response.state)
+      this.context.commit("setErrorMessage", response.errorMessage);
+
+    return response.state;
   }
 
 //   @Action

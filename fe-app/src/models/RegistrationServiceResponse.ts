@@ -1,11 +1,11 @@
 export default class RegistrationServiceResponse {
-    constructor(state: Boolean, responseCode: Number, message: String){
+    constructor(state: Boolean, responseCode: Number, errorMessage: String){
         this.state = state;
         this.responseCode = responseCode;
-        this.message = message;
+        this.errorMessage = errorMessage;
     }
   
     readonly state: Boolean;
     readonly responseCode: Number;
-    readonly message: String;
+    readonly errorMessage: String;
   };
