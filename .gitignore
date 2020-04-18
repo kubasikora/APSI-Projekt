@@ -3,3 +3,5 @@ backend/django/bookmarks/venv
 backend/django/bookmarks/db.sqlite3
 .idea
 __pycache__
+.vscode
+.pyc
