@@ -7,5 +7,4 @@ from django.urls import path
 urlpatterns = [path(r'login', LoginView.as_view()),
                path(r'logout', LogoutView.as_view()),
                path('users', UserList.as_view()),
-               path('profiles', ProfileList.as_view()),
-]
+               path('profiles', ProfileList.as_view()),]
