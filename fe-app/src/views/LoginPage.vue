@@ -24,14 +24,14 @@ const login = namespace("Login");
     LoginForm
   }
 })
-export default class LoginView extends Vue {
+export default class LoginPageView extends Vue {
   @login.Action
-  public logUsingCredentials: () => Promise<boolean>
+  public logUsingCredentials: () => Promise<Boolean>
 
   public async login(): Promise<void> {
     const response = await this.logUsingCredentials();
     if(response){
-      this.$router.push({name: "Landing page"});
+      this.$router.push({name: "Volunteer landing page"});
     }
   }
   public register(): void {

@@ -24,7 +24,7 @@ const register = namespace("Registration");
   }
 })
 
-export default class RegistrationPage extends Vue {
+export default class RegistrationPageView extends Vue {
 
 @register.Action
     public resetData: () => void;
