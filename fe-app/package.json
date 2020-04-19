@@ -8,11 +8,13 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@types/js-cookie": "^2.2.6",
     "@types/node": "^13.11.1",
     "@types/qs": "^6.9.1",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "fs": "0.0.1-security",
+    "js-cookie": "^2.2.1",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.2",
     "vue-property-decorator": "^8.3.0",

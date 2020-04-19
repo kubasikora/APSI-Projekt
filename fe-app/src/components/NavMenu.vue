@@ -20,12 +20,21 @@
       </v-list-item-content>
     </v-list-item>
     
-    <v-list-item @click="logoutUser">
+    <v-list-item v-if="isLoggedIn" @click="logoutUser">
       <v-list-item-action>
         <v-icon>mdi-logout</v-icon>
       </v-list-item-action>
       <v-list-item-content>
         <v-list-item-title>Wyloguj</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
+
+    <v-list-item v-else @click="goToLogin">
+      <v-list-item-action>
+        <v-icon>mdi-login</v-icon>
+      </v-list-item-action>
+      <v-list-item-content>
+        <v-list-item-title>Zaloguj</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
   </v-list>
@@ -34,6 +43,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { namespace } from "vuex-class";
+import LoginService from "@/services/LoginService";
 
 const login = namespace("Login");
 
@@ -45,8 +55,17 @@ export default class NavMenu extends Vue {
   public async logoutUser(): Promise<void> {
     const response = await this.logout();
     if(response){
-      this.$router.push({name: "Login"});
+      this.$router.push({name: "Guest landing page"});
     }
+  }
+
+  public goToLogin(): void {
+    this.$router.push({path: "/login"})
+  }
+
+  get isLoggedIn(): Boolean {
+    const srv: LoginService = new LoginService();
+    return srv.isLoggedIn();
   }
 };
 </script>

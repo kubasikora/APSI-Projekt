@@ -23,7 +23,7 @@ import RegistrationForm from "@/components/RegistrationForm.vue";
   }
 })
 
-export default class RegistrationPage extends Vue {
+export default class RegistrationPageView extends Vue {
 
 }
 </script>
