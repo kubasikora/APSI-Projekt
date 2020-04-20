@@ -2,7 +2,8 @@
   <BaselineLayout title="Helpado">
     <v-container>
      <v-bottom-navigation
-      :value="activeBtn"
+     @change="help"
+      v-model="activeBtn"
       color="success"
       grow
     >
@@ -22,7 +23,7 @@
       </v-btn>
     </v-bottom-navigation>
      <v-card class="order-card">
-         <NewOrderList v-if="activeBtn === 0"></NewOrderList>
+         <NewOrderList v-if="activeBtn == 0"></NewOrderList>
          <PlaceSelection v-else-if="activeBtn == 1"></PlaceSelection>
          <ConfirmOrder v-else></ConfirmOrder>   
     </v-card>
@@ -46,9 +47,10 @@ import PlaceSelection from "@/components/PlaceSelection.vue";
     PlaceSelection
   }
 })
-export default class BoomerBewOrder extends Vue {
+export default class BoomerNewOrder extends Vue {
 
      private activeBtn: Number = 0
+     
 };
 </script>
 
