@@ -47,6 +47,6 @@ export default class LoginService {
   }
 
   public getRole(): Role {
-    return Role.Volunteer; // zaslepka - do poprawienia jak będzie ciastko z rolą 
+    return Role.Boomer; // zaslepka - do poprawienia jak będzie ciastko z rolą 
   }
 }

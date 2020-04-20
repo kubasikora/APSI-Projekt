@@ -31,6 +31,12 @@ const routes = [
     meta: { requiresAuth: true, requiredRole: Role.Boomer }
   },
   {
+    path: "/b/newOrder",
+    name: "Boomer new order page",
+    component: () => import("@/views/BoomerNewOrder.vue"),
+    meta: { requiresAuth: true, requiredRole: Role.Boomer }
+  },
+  {
     path: "/registration",
     name: "Registration page",
     component: () => import("@/views/RegistrationPage.vue"),
