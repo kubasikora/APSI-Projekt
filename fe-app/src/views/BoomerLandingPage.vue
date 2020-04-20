@@ -3,8 +3,7 @@
     <v-container>
       <v-row>
         <v-col>
-         <v-alert color="primary" class="subtitle">Boomer landing page</v-alert>
-       
+         <h1>Boomer landing page</h1>
         </v-col>
       </v-row>
       <v-row>
