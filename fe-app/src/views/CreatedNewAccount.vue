@@ -1,9 +1,17 @@
 <template>
  <CenteredLayout title="Konto zostało założone">
      <template v-slot:actions>
-        <v-img src="@/assets/logo.png" class="logo" />
-        <v-spacer />
-        <v-btn color="accent" @click="goToLoginPage"> Przejdź do strony logowania</v-btn>
+          <v-container fluid>
+             <v-row>
+                 <v-col cols=5>
+                <v-img src="@/assets/logo.png" class="logo" />
+                 </v-col>
+                 <v-col cols=1 />
+                 <v-col>
+                <v-btn class="button-log" color="accent" @click="goToLoginPage"> Zaloguj się</v-btn>
+                 </v-col>
+             </v-row>
+        </v-container>
       </template>
   </CenteredLayout>
   
@@ -29,8 +37,10 @@ export default class  CreatedNewAccount extends Vue {
 
 <style>
 .logo {
-    width: 20%;
-    margin-bottom: 5%
+    width: 100%;
+}
+.button-log{
+    margin-top: 25%
 }
 
 </style>

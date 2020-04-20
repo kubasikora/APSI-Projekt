@@ -1,7 +1,10 @@
 backend/django/venv
 backend/django/bookmarks/venv
 backend/django/bookmarks/db.sqlite3
+backend/django/bookmarks/account/migrations/
+backend/django/bookmarks/orders/migrations/
 .idea
 __pycache__
-.vscode
-.pyc
+.vscode/
+*.pyc
+*.sqlite3

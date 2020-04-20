@@ -41,9 +41,9 @@
            <v-radio-group row>
           <v-radio
             v-for="r in roles"
-            :key="r"
-            :label="`${r}`"
-            @mouseup="setRole(r)"
+            :key="r.key"
+            :label="`${r.label}`"
+            @mouseup="setRole(r.key)"
           ></v-radio>
            </v-radio-group>
            <v-alert v-if="errorMessage" border="left" colored-border type="error" elevation="2">{{ errorMessage }}</v-alert>
@@ -85,7 +85,7 @@ export default class RegistrationForm extends Vue {
       return {
         show1: false,
         role: '',
-        roles: ["wolontariusz", "odbiorca pomocy"],
+        roles: [{label: "wolontariusz", key: "vol"}, {label:"potrzebujący", key: "boom"} ],
         rules: {
           required: (value: string) => !! value || 'Wymagane',
           min: (v: string) =>  v.length >= 8 || 'Hasło musi zawierać min. 8 znaków',
