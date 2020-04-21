@@ -1,4 +1,5 @@
 backend/django/venv
+backend/django/env
 backend/django/bookmarks/venv
 backend/django/bookmarks/db.sqlite3
 backend/django/bookmarks/account/migrations/
