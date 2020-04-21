@@ -8,5 +8,11 @@
 import { Component, Vue } from "vue-property-decorator";
 
 @Component
-export default class App extends Vue {};
+export default class App extends Vue {}
 </script>
+
+<style>
+html, body {
+  font-family: "Roboto", sans-serif;
+}
+</style>
