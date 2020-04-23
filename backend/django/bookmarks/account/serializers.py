@@ -6,7 +6,7 @@ from .models import Profile
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    #user = UserSerializer(many=False, read_only=True)
+    # user = UserSerializer(many=False, read_only=True)
     orders = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     # def create(self, validated_data):
     #     user_data = validated_data.pop('user')
@@ -17,7 +17,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ('date_of_birth', 'user_type', 'address', 'orders')
+        fields = ('date_of_birth', 'user_type', 'address', 'orders', 'user')
         #fields = ('user_type', 'date_of_birth', 'username', 'password', 'user', 'address')
         #fields = ('user_type', 'date_of_birth', 'user', 'address')
 

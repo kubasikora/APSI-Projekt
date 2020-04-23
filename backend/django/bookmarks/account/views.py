@@ -18,7 +18,10 @@ class LoginView(views.APIView):
                 'message': 'Username or password incorrect'
             }, status=status.HTTP_401_UNAUTHORIZED)
         login(request, user)
-        return Response(UserSerializer(user).data)
+        response = Response(UserSerializer(user).data)
+        response.set_cookie('username', user.get_username())
+        response.set_cookie('user_type', user.profile.user_type)
+        return response
 
 class LogoutView(views.APIView):
     def get(self, request):
@@ -32,3 +35,9 @@ class UserList(generics.ListCreateAPIView):
 class ProfileList(generics.ListCreateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+
+class MyProfile(generics.ListCreateAPIView):
+    def get_queryset(self):
+        user = self.request.user
+        return User.objects.filter(id=user.id)
+    serializer_class = UserSerializer
