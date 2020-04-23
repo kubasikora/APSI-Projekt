@@ -3,7 +3,8 @@
     <v-container>
       <v-row>
         <v-col>
-          <EntryCarousel/>
+         <v-alert color="primary" class="subtitle">Boomer landing page</v-alert>
+       
         </v-col>
       </v-row>
       <v-row>
@@ -57,7 +58,7 @@ import EntryCarousel from "@/components/EntryCarousel.vue";
     EntryCarousel
   }
 })
-export default class LoginView extends Vue {
+export default class BoomerLandingPageView extends Vue {
 
 };
 </script>
@@ -65,5 +66,10 @@ export default class LoginView extends Vue {
 <style scoped>
 .info-card {
   margin: 1rem 0;
+}
+
+.subtitle {
+  color: white;
+  font-size: 24px;
 }
 </style>
