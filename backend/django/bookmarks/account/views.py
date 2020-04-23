@@ -41,3 +41,16 @@ class MyProfile(generics.ListCreateAPIView):
         user = self.request.user
         return User.objects.filter(id=user.id)
     serializer_class = UserSerializer
+
+class MyProfile2(views.APIView):
+    def get(self, request):
+        return Response(UserSerializer(request.user).data)
+
+    def put(self, request):
+        me = User.objects.get(pk=request.user.pk)
+        serializer = UserSerializer(me, data=request.data, partial=True)
+        # serializer.update(me, request.data)
+        if serializer.is_valid():
+            serializer.save(save_fields=['username'])
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
