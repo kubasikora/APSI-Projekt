@@ -3,6 +3,5 @@ import Order from '@/models/Order';
 
 @Module({namespaced: true})
 export default class BoomerOrders extends VuexModule {
-    newOrder: Order = new Order([],)
-
+    // newOrder: Order = new Order([],
 }
