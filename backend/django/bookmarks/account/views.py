@@ -54,3 +54,8 @@ class MyProfile2(views.APIView):
             serializer.save(save_fields=['username'])
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def delete(self, request):
+        me = User.objects.get(pk=request.user.pk)
+        me.delete()
+        logout(request)
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
