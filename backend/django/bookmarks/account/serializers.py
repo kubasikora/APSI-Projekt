@@ -35,6 +35,20 @@ class UserSerializer(serializers.ModelSerializer):
         Profile.objects.create(user=user, **profile_data)
         return user
 
+    def update(self, user, validated_data):
+        profile_data = validated_data.pop('profile')
+        for key, value in validated_data.items():
+            setattr(user, key, value)
+        if 'password' in validated_data.keys():
+            user.set_password(validated_data["password"])
+
+        serializer = ProfileSerializer(user.profile, data=profile_data, partial=True)
+        if serializer.is_valid():
+            user.save()
+            serializer.save()
+        # ProfileSerializer.update(instance=user.profile, validated_data=profile_data)
+        return user
+
     class Meta:
         model = User
         fields = ('id', 'username', 'password', 'profile')
