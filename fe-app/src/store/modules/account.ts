@@ -5,7 +5,7 @@ import Profile from "@/models/Profile";
 
 @Module({namespaced: true})
 export default class Account extends VuexModule {
-  profile: Profile = new Profile("", "", "", "", new Date());
+  profile: Profile = new Profile("", "", "", "", "", new Date());
   loading: boolean = false;
   errorMessage: String = "";
 
@@ -37,5 +37,14 @@ export default class Account extends VuexModule {
         this.context.commit("setErrorMessage", `Wystąpił błąd ${responseCode}. Proszę spróbuje ponownie później`)
 
     this.context.commit("setLoading", false);
+  }
+
+  @Action
+  async saveProfile(profile: Profile){
+    const srv: ProfileService = new ProfileService();
+    this.context.commit("setLoading", true);
+    srv.saveMyProfile(profile);
+    this.context.commit("setLoading", false);
+
   }
 }

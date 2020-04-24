@@ -37,9 +37,9 @@
         </v-menu>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="primary">Anuluj</v-btn>
+        <v-btn color="primary" @click="abortProfileEdition">Anuluj</v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="success">Zapisz</v-btn>
+        <v-btn color="success" @click="saveProfileEdition">Zapisz</v-btn>
       </v-card-actions>
     </v-form>
   </v-card>
@@ -49,7 +49,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 import BaselineLayout from "@/layouts/BaselineLayout.vue";
 import { namespace } from "vuex-class";
-import Profile from "@/models/Profile;"
+import Profile from "@/models/Profile";
 
 const account = namespace("Account");
 
@@ -64,7 +64,7 @@ interface MenuInterface {
 @Component
 export default class AccountDataPanel extends Vue {
   private menu: Boolean = false;
-  private date: String = "";
+  private date: string = "";
   private address: String = "";
   private city: String = "";
   private firstName: String = "";
@@ -77,7 +77,10 @@ export default class AccountDataPanel extends Vue {
   public profile: Profile;
 
   @account.Action
-  public loadProfile: () => void
+  public loadProfile: () => void;
+
+  @account.Action
+  public saveProfile: (profile: Profile) => void;
 
   private padNumber(num: Number): string {
     if(num < 10)
@@ -112,6 +115,15 @@ export default class AccountDataPanel extends Vue {
 
   public async save(date: String){
     this.$refs.menu.save(date);
+  }
+
+  public saveProfileEdition(){
+    const newProfile: Profile = new Profile(this.profile.id, this.firstName, this.lastName, this.address, this.city, new Date(this.date));
+    this.saveProfile(newProfile);
+  }
+
+  public abortProfileEdition(){
+    this.loadProfile();
   }
 }
 </script>
