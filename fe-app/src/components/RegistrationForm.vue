@@ -24,7 +24,7 @@
       label="Email"
       name="email"
       type="text"
-      :rules="rules.required"
+      :rules="[rules.required]"
       append-outer-icon="mdi-email-outline"
     />
     <v-text-field

@@ -1,7 +1,7 @@
 <template>
-    <div style="height: 90%; width=100%">
+    <div class= "map-card">
          <l-map
-      style="height: 100%; width: 90%"
+      class = "map"
       :zoom="zoom"
       :center="center"
       @update:zoom="zoomUpdated"
@@ -21,6 +21,10 @@
 import { Component, Vue } from "vue-property-decorator";
 import {LMap, LTileLayer, LMarker} from 'vue2-leaflet';
 import { LatLng } from "leaflet";
+import { namespace } from "vuex-class";
+import Order from "@/models/Order";
+
+const order = namespace("BoomerOrders");
 @Component({
   components: {
   LMap,
@@ -37,6 +41,11 @@ export default class PlaceSelection extends Vue {
     private marker: LatLng = new LatLng(0,0)
     private drag : Boolean = true
 
+    // @login.State
+    // public loading: Boolean;
+
+   @order.Action
+    public setCoordinates: (coordinates: Array<number>) => void
     private zoomUpdated (zoom: Number) : void{
       this.zoom = zoom;
     }
@@ -44,11 +53,8 @@ export default class PlaceSelection extends Vue {
       this.center = center;
     }
     updateMarker(marker: L.LatLng){
-        console.log('before',this.marker)
        this.marker = marker
-       console.log('after', this.marker)
-       
-
+       this.setCoordinates([this.marker.lat, this.marker.lng])
     }
     mounted() {
        {
@@ -69,5 +75,14 @@ export default class PlaceSelection extends Vue {
 </script>
 
 <style>
+.map {
+    height: 80%; 
+    width: 100%;
+    align-self: center;
+}
+.map-card {
+    height: 63vh; 
+    width: 100%;
+}
 
 </style>
