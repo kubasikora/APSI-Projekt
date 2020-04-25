@@ -2,11 +2,24 @@ import { VuexModule, Module, Mutation, Action } from "vuex-module-decorators";
 import Order from '@/models/Order';
 import Coordinates from '@/models/Coordinates';
 import Product from '@/models/Product';
+import OrdersService from '@/services/OrdersService';
+import OrderResponse from '@/models/OrderResponse';
 
 @Module({namespaced: true})
 export default class BoomerOrders extends VuexModule {
     newOrder: Order = new Order([],new Coordinates(), "")
+    loading: Boolean = false
+    errorMessage: String = ""
     
+    @Mutation
+  setLoadingState(newLoadingState: boolean): void {
+    this.loading = newLoadingState;
+  }
+
+  @Mutation
+  setErrorMessage(errorMessage: String): void {
+    this.errorMessage = errorMessage;
+  }
     @Mutation
     setNewData(order: Order): void {
     console.log('order',order)
@@ -35,14 +48,14 @@ export default class BoomerOrders extends VuexModule {
     async createNewOrder(): Promise<Boolean> {
     this.context.commit("setLoadingState", true);
 
-    // const srv: LoginService = new LoginService();
-    // const response: LoginResponse = await srv.login(this.credentials);
+    const srv: OrdersService = new OrdersService();
+    const response: OrderResponse = await srv.addOrder(this.newOrder);
     // this.context.dispatch("resetCredentials");
     
-    // this.context.commit("setLoadingState", false);
-    // if(!response.state)
-    //   this.context.commit("setErrorMessage", response.message);
+    this.context.commit("setLoadingState", false);
+    if(!response.state)
+      this.context.commit("setErrorMessage", response.message);
 
-    // return response.state;
+    return response.state;
   }
 }

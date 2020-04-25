@@ -34,8 +34,8 @@
         <v-stepper-content step="3">
           <ConfirmOrder />  
           <v-btn
-            color="accent">
-            <!-- @click="e1 = 1" -->
+            color="accent"
+            @click="createOrder">
             Złóż zamówienie
           </v-btn>
           <v-btn color="info" @click="e1 = 2">Wróć</v-btn>
@@ -52,6 +52,8 @@ import BaselineLayout from "@/layouts/BaselineLayout.vue";
 import NewOrderList from "@/components/NewOrderList.vue";
 import ConfirmOrder from "@/components/ConfirmOrder.vue";
 import PlaceSelection from "@/components/PlaceSelection.vue";
+import { namespace } from "vuex-class";
+const order = namespace("BoomerOrders");
 
 @Component({
   components: {
@@ -64,6 +66,12 @@ import PlaceSelection from "@/components/PlaceSelection.vue";
 export default class BoomerNewOrder extends Vue {
 
      private e1: Number = 1
+
+    @order.Action
+    private createNewOrder:  () => Promise<Boolean>
+     private createOrder(): void{
+         this.createNewOrder()
+     }
      
 };
 </script>
