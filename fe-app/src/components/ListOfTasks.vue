@@ -2,7 +2,7 @@
   <v-expansion-panels
     :hover="true">
 
-    <v-expansion-panel v-for="task in tasks" :key="task">
+    <v-expansion-panel v-for="task in tasks" :key="task.listID">
       <v-expansion-panel-header>
         <span class="icon">
           <v-icon>mdi-account</v-icon>

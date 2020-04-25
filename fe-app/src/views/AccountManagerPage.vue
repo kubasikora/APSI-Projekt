@@ -2,13 +2,12 @@
   <BaselineLayout title="Helpado">
     <v-container>
       <v-row>
-        <v-col>
+        <v-col offset="1">
           <h1>Zarządzanie kontem</h1>
-        </v-col>
+        </v-col>  
       </v-row>
       <v-row>
-        <v-col cols="1"></v-col>
-        <v-col cols="10">
+        <v-col cols="10" offset="1">
           <AccountDataPanel />
           <AccountActionsPanel />
         </v-col>
