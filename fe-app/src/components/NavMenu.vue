@@ -10,6 +10,14 @@
         <v-list-item-title>Home</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
+    <v-list-item v-if="isLoggedIn && role == Role.Boomer" @click="goToNewOrder">
+      <v-list-item-action>
+        <v-icon>mdi-cart-outline</v-icon>
+      </v-list-item-action>
+      <v-list-item-content>
+        <v-list-item-title>Złóż zamówienie</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
     
     <v-list-item link>
       <v-list-item-action>
@@ -61,6 +69,9 @@ export default class NavMenu extends Vue {
 
   public goToLogin(): void {
     this.$router.push({path: "/login"})
+  }
+  public goToNewOrder(): void{
+      this.$router.push({name: "Boomer new order page"})
   }
 
   get isLoggedIn(): Boolean {
