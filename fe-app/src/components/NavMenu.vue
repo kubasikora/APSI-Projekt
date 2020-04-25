@@ -11,14 +11,14 @@
       </v-list-item-content>
     </v-list-item>
 
-    <v-list-item v-if="isLoggedIn && role == Role.Boomer" @click="goToNewOrder">
+    <!-- <v-list-item v-if="isLoggedIn && role == Role.Boomer" @click="goToNewOrder">
       <v-list-item-action>
         <v-icon>mdi-cart-outline</v-icon>
       </v-list-item-action>
       <v-list-item-content>
         <v-list-item-title>Złóż zamówienie</v-list-item-title>
       </v-list-item-content>
-    </v-list-item>
+    </v-list-item> -->
     
     <v-list-item link :to='{name: "Manage account"}'>
       <v-list-item-action>

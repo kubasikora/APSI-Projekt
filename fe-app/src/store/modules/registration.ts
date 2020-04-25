@@ -11,6 +11,7 @@ export default class Registration extends VuexModule {
 
   @Mutation
   setNewData(userData: RegistrationData): void {
+      console.log(userData)
     this.userData = userData;
   }
 
