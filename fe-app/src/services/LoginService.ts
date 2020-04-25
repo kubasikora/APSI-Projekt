@@ -34,6 +34,8 @@ export default class LoginService {
     try {
       await apiClient.get("/account/logout");
       Cookies.remove("csrftoken");
+      Cookies.remove("username");
+      Cookies.remove("user_type");
       return new LogoutResponse(true, 200, "Logged out");
     } catch (err) {
       console.log(err.response.data);
@@ -42,11 +44,25 @@ export default class LoginService {
   }
 
   public isLoggedIn(): Boolean {
-    const session = Cookies.get("csrftoken"); // dorobić sprawdzanie waznosci tokena
+    const session = Cookies.get("csrftoken");
     return !!session;
   }
 
+  public getUsername(): String {
+    const username = Cookies.get("username");
+    if(username)
+      return username;
+    return "";
+  }
+
   public getRole(): Role {
-    return Role.Boomer; // zaslepka - do poprawienia jak będzie ciastko z rolą 
+    const role = Cookies.get("user_type");
+
+    if(role == "BOOM")
+      return Role.Boomer
+    if(role == "vol")
+      return Role.Volunteer;
+
+    return Role.Guest; 
   }
 }

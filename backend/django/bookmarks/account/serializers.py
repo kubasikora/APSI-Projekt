@@ -2,12 +2,14 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from orders.models import Order
 from .models import Profile
+from orders.serializers import OrderSerializer
 
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    #user = UserSerializer(many=False, read_only=True)
-    orders = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    # user = UserSerializer(many=False, read_only=True)
+    # orders = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    orders = OrderSerializer(many=True, read_only=True)
     # def create(self, validated_data):
     #     user_data = validated_data.pop('user')
     #     user = UserSerializer.create(validated_data=user_data)
@@ -31,6 +33,20 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data["password"])
         user.save()
         Profile.objects.create(user=user, **profile_data)
+        return user
+
+    def update(self, user, validated_data):
+        profile_data = validated_data.pop('profile')
+        for key, value in validated_data.items():
+            setattr(user, key, value)
+        if 'password' in validated_data.keys():
+            user.set_password(validated_data["password"])
+
+        serializer = ProfileSerializer(user.profile, data=profile_data, partial=True)
+        if serializer.is_valid():
+            user.save()
+            serializer.save()
+        # ProfileSerializer.update(instance=user.profile, validated_data=profile_data)
         return user
 
     class Meta:
