@@ -79,4 +79,18 @@ export default class Account extends VuexModule {
     this.context.commit("setLoadingModal", false);
     return state;
   }
+
+  @Action 
+  async deleteUser(): Promise<Boolean> {
+    const srv: ProfileService = new ProfileService();
+    this.context.commit("setLoadingModal", true);
+    const { state, responseCode } = await srv.deleteAccount();
+    if(state) 
+      this.context.commit("setErrorMessageModal", "");
+    else 
+      this.context.commit("setErrorMessageModal", `Wystąpił błąd ${responseCode}. Proszę spróbuje ponownie później`)
+
+    this.context.commit("setLoadingModal", false);
+    return state;
+  }
 }

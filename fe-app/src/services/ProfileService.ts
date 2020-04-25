@@ -57,4 +57,18 @@ export default class ProfileService {
       else return new ProfileResponse(false, 408, null);
     }
   }
+
+  public async deleteAccount(): Promise<ProfileResponse> {
+    try {
+      throw new Error("Not implemented yet");
+      apiClient.defaults.headers.put["X-CSRFTOKEN"] = Cookies.get("csrftoken");
+      const response = await apiClient.delete("/account/me");
+      return new ProfileResponse(true, response.status, null);
+    } catch(err) {
+      const response = err.response;
+      if (response)
+        return new ProfileResponse(false, response.status, null);
+      else return new ProfileResponse(false, 408, null);
+    }
+  }
 }
