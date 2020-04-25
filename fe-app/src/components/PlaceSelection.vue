@@ -63,6 +63,7 @@ export default class PlaceSelection extends Vue {
             this.center = [position.coords.latitude, position.coords.longitude];
             this.marker.lat = position.coords.latitude, 
             this.marker.lng =position.coords.longitude;
+            this.setCoordinates([this.marker.lat, this.marker.lng])
 
       },
       error => {

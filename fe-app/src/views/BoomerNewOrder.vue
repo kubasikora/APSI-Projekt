@@ -1,27 +1,6 @@
 <template>
   <BaselineLayout title="Helpado">
     <v-container>
-     <!-- <v-bottom-navigation
-     @change="help"
-      v-model="activeBtn"
-      color="success"
-      grow
-    >
-      <v-btn>
-        <span>Wybierz produkty</span>
-        <v-icon>mdi-basket-fill</v-icon>
-      </v-btn>
-  
-      <v-btn >
-        <span>Wybierz miejsce dostawy</span>
-        <v-icon>mdi-map-marker</v-icon>
-      </v-btn>
-  
-      <v-btn>
-        <span>Złóż zamówienie</span>
-        <v-icon>mdi-message-plus-outline</v-icon>
-      </v-btn>
-    </v-bottom-navigation> -->
      <v-stepper v-model="e1">
       <v-stepper-header>
         <v-stepper-step :complete="e1 > 1" step="1">Wybierz produkty</v-stepper-step>
@@ -55,7 +34,7 @@
         <v-stepper-content step="3">
           <ConfirmOrder />  
           <v-btn
-            color="primary">
+            color="accent">
             <!-- @click="e1 = 1" -->
             Złóż zamówienie
           </v-btn>
