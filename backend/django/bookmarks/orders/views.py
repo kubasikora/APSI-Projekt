@@ -10,6 +10,7 @@ from django_filters import rest_framework as filters
 class OrderFilter(FilterSet):
     coord_x = filters.CharFilter('coord_x')
     coord_y = filters.CharFilter('coord_y')
+    status = filters.CharFilter('status')
     min_coordx = filters.CharFilter(method="filter_min_coordx")
     max_coordx = filters.CharFilter(method="filter_max_coordx")
     min_coordy = filters.CharFilter(method="filter_min_coordy")
@@ -35,13 +36,15 @@ class OrderFilter(FilterSet):
         queryset = queryset.filter(coord_y__lt=value)
         return queryset
 
+
+
 # Create your views here.
 class OrderList(generics.ListCreateAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter)
     filter_class = OrderFilter
-    filter_fields = ('coord_x','coord_y',)
+    filter_fields = ('coord_x','coord_y','status',)
     ordering_fields = ('coord_x','coord_y',)
     ordering = ('id','coord_x','coord_y',)
     search_fields = ('coord_x','coord_y',)
