@@ -44,10 +44,15 @@ export default class LoginForm extends Vue {
   public loading: Boolean;
 
   @login.Action
-  public setEmail: (newEmail: String) => void
+  public setEmail: (newEmail: String) => void;
 
   @login.Action
-  public setPassword: (newPassword: String) => void
+  public setPassword: (newPassword: String) => void;
+
+  mounted(){
+    this.setEmail("");
+    this.setPassword("");
+  }
 };
 </script>
 

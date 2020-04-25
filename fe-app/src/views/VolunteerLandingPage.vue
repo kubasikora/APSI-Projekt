@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-col>
-          <v-alert color="primary" class="subtitle">Volunteer landing page</v-alert>
+          <h1>Volunteer landing page</h1>
         </v-col>
       </v-row>
       <v-row>
