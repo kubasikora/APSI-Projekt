@@ -43,7 +43,14 @@ export default class Account extends VuexModule {
   async saveProfile(profile: Profile){
     const srv: ProfileService = new ProfileService();
     this.context.commit("setLoading", true);
-    srv.saveMyProfile(profile);
+    const {state, responseCode, profile: newProfile} = await srv.saveMyProfile(profile);
+    if(state) {
+      this.context.commit("setNewProfile", newProfile);
+      this.context.commit("setErrorMessage", "");
+    }
+    else 
+      this.context.commit("setErrorMessage", `Wystąpił błąd ${responseCode}. Proszę spróbuje ponownie później`)
+
     this.context.commit("setLoading", false);
 
   }

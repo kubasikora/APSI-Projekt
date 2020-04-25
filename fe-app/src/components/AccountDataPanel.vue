@@ -92,7 +92,7 @@ export default class AccountDataPanel extends Vue {
     await this.loadProfile();
     const date: Date = this.profile.dateOfBirth;
     if(date){
-      const printableDate: string = `${date.getFullYear()}-${this.padNumber(date.getMonth())}-${this.padNumber(date.getDay())}`;
+      const printableDate: string = `${date.getFullYear()}-${this.padNumber(date.getMonth() + 1)}-${this.padNumber(date.getDate())}`;
       this.$refs.menu.save(printableDate);
       this.date = printableDate;
     }
