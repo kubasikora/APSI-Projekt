@@ -9,7 +9,47 @@
         </v-col>
         <v-col cols="6">
           <v-spacer />
-          <v-btn color="success" class="alert-button button-col">Zmień</v-btn>
+            <v-dialog v-model="dialog" width="500">
+              <template v-slot:activator="{ on }">
+                <v-btn v-on="on" color="success" class="alert-button button-col">Zmień</v-btn>
+              </template>
+
+              <v-card v-if="displayConfirmation">
+                <v-card-title class="headline grey lighten-2" primary-title>Zmień hasło</v-card-title>
+                <v-card-text class="modal-form">
+                  Hasło zmieniono pomyślnie, proszę przejdź do strony logowania.  
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="success" @click="$router.push({path: '/login'})">Przejdź</v-btn>
+                </v-card-actions>
+              </v-card>
+
+              <v-card v-else-if="displayError">
+                <v-card-title class="headline grey lighten-2" primary-title>Zmień hasło</v-card-title>
+                <v-card-text class="modal-form">
+                  Niestety nie udało zmienić się Twojego hasła. Spróbuj ponownie później.
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="success" @click="dialog = false">Zamknij</v-btn>
+                </v-card-actions>
+              </v-card>
+
+              <v-card v-else>
+                <v-card-title class="headline grey lighten-2" primary-title>Zmień hasło</v-card-title>
+                <v-card-text class="modal-form">
+                  <v-text-field v-model="newPassword" type="password" label="Nowe hasło" color="primary" :loading="loadingModal" :disabled="loadingModal"></v-text-field>
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="success" @click="submitNewPassword">Zmień</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
         </v-col>
       </v-row>
       <v-divider />
@@ -27,11 +67,44 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import BaselineLayout from "@/layouts/BaselineLayout.vue";
+import { namespace } from "vuex-class";
+
+const account = namespace("Account");
+const login = namespace("Login");
 
 @Component
-export default class AccountActionsPanel extends Vue {}
+export default class AccountActionsPanel extends Vue {
+  private dialog: boolean = false;
+  private newPassword: string = "";
+  private displayConfirmation: boolean = false;
+  private displayError: boolean = false;
+
+  @account.State
+  public loadingModal: boolean;
+
+  @account.Action
+  public changePassword: (password: String) => Boolean;
+
+  @login.Action
+  public logout: () => boolean;
+
+  @Watch("dialog")
+  watchModal(value: boolean){
+    this.newPassword = "";
+  }
+
+  public async submitNewPassword(){
+    if(await this.changePassword(this.newPassword)){
+      this.displayConfirmation = true;
+      this.logout();
+    }
+    else { 
+      this.displayError = true;
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -50,5 +123,9 @@ export default class AccountActionsPanel extends Vue {}
 .button-col {
   float: right;
   margin: 0 10px;
+}
+
+.modal-form {
+  margin-top: 2rem;
 }
 </style>

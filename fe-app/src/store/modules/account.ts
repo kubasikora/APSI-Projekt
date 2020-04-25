@@ -8,6 +8,8 @@ export default class Account extends VuexModule {
   profile: Profile = new Profile("", "", "", "", "", new Date());
   loading: boolean = false;
   errorMessage: String = "";
+  errorMessageModal: String = "";
+  loadingModal: boolean = false;
 
   @Mutation
   setNewProfile(profile: Profile): void {
@@ -22,6 +24,16 @@ export default class Account extends VuexModule {
   @Mutation
   setErrorMessage(errorMessage: String): void {
     this.errorMessage = errorMessage;
+  }
+
+  @Mutation
+  setLoadingModal(loading: boolean): void {
+    this.loadingModal = loading;
+  }
+
+  @Mutation
+  setErrorMessageModal(errorMessage: String): void {
+    this.errorMessageModal = errorMessage;
   }
 
   @Action
@@ -52,6 +64,19 @@ export default class Account extends VuexModule {
       this.context.commit("setErrorMessage", `Wystąpił błąd ${responseCode}. Proszę spróbuje ponownie później`)
 
     this.context.commit("setLoading", false);
+  }
 
+  @Action
+  async changePassword(password: String): Promise<Boolean> {
+    const srv: ProfileService = new ProfileService();
+    this.context.commit("setLoadingModal", true);
+    const { state, responseCode } = await srv.changePassword(password);
+    if(state) 
+      this.context.commit("setErrorMessageModal", "");
+    else 
+      this.context.commit("setErrorMessageModal", `Wystąpił błąd ${responseCode}. Proszę spróbuje ponownie później`)
+
+    this.context.commit("setLoadingModal", false);
+    return state;
   }
 }
