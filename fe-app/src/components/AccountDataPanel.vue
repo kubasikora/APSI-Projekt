@@ -124,6 +124,17 @@ export default class AccountDataPanel extends Vue {
 
   public abortProfileEdition(){
     this.loadProfile();
+    const date: Date = this.profile.dateOfBirth;
+    if(date){
+      const printableDate: string = `${date.getFullYear()}-${this.padNumber(date.getMonth() + 1)}-${this.padNumber(date.getDate())}`;
+      this.$refs.menu.save(printableDate);
+      this.date = printableDate;
+    }
+
+    this.firstName = this.profile.firstName;
+    this.lastName = this.profile.lastName;
+    this.address = this.profile.address;
+    this.city = this.profile.city;
   }
 }
 </script>

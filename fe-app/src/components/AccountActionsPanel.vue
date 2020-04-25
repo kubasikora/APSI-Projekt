@@ -34,7 +34,7 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="success" @click="dialogPassword = false">Zamknij</v-btn>
+                  <v-btn color="success" @click="dialogPassword = false; displayError= false">Zamknij</v-btn>
                 </v-card-actions>
               </v-card>
 
@@ -84,7 +84,7 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="success" @click="dialogAccount = false">Zamknij</v-btn>
+                  <v-btn color="success" @click="dialogAccount = false; displayError= false">Zamknij</v-btn>
                 </v-card-actions>
               </v-card>
 
