@@ -22,12 +22,10 @@ export default class BoomerOrders extends VuexModule {
   }
     @Mutation
     setNewData(order: Order): void {
-    console.log('order',order)
       this.newOrder = order
     }
     @Action
     setNewProducts(products: Array<Product>): void {
-        console.log('setproducts', products)
         const order : Order = new Order(products, this.newOrder.coordinates, this.newOrder.extra)
         this.context.commit("setNewData", order)
 
@@ -45,8 +43,14 @@ export default class BoomerOrders extends VuexModule {
         this.context.commit("setNewData", order)
     }
     @Action
+    clearOrder() {
+        const order : Order = new Order([],new Coordinates(), "")
+        this.context.commit("setNewData", order)
+    }
+    @Action
     async createNewOrder(): Promise<Boolean> {
     this.context.commit("setLoadingState", true);
+    console.log('create')
 
     const srv: OrdersService = new OrdersService();
     const response: OrderResponse = await srv.addOrder(this.newOrder);
