@@ -3,7 +3,7 @@
     <div class="find-boomers">
       <v-btn block x-large color="secondary">Znajdź potrzebujących w okolicy</v-btn>
     </div>
-
+    
     <v-divider></v-divider>
     <div class="list-title">Twoje zlecenia</div>
     <v-divider></v-divider>
