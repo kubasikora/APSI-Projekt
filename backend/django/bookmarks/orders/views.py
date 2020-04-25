@@ -71,15 +71,24 @@ class OrderInRadius(generics.ListAPIView):
         orders = Order.objects.filter(pk=uid).values()
         coord_x_source = orders.values_list('coord_x', flat=True).last()
         coord_y_source = orders.values_list('coord_y', flat=True).last()
-        orders = Order.objects.all()
+        orders = Order.objects.filter(coord_x__gt=coord_x_source - float(dist),
+                                      coord_x__lt=coord_x_source + float(dist),
+                                      coord_y__gt=coord_y_source - float(dist),
+                                      coord_y__lt=coord_y_source + float(dist))
         idx = []
         for order in orders:
             coord_x_des = order.coord_x
             coord_y_des = order.coord_y
-            dist_cal = sqrt((coord_x_source - coord_x_des)**2 + (coord_y_source - coord_y_des)**2)
+            dist_cal = sqrt((coord_x_source - coord_x_des) ** 2 + (coord_y_source - coord_y_des) ** 2)
             print(dist_cal)
-            if dist_cal <= int(dist) and order.pk != int(uid):
+            if dist_cal <= float(dist) and order.pk != int(uid):
                 idx.append(order.pk)
 
         orders = Order.objects.filter(id__in=idx)
         return orders
+
+class AssignedOrders(generics.ListCreateAPIView):
+    serializer_class = OrderSerializer
+    def get_queryset(self):
+        user = self.request.user.profile
+        return Order.objects.filter(volunteer=user, status="accepted")
