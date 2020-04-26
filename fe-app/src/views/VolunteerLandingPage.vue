@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-col cols="12">
-          <div class="find-boomers">
+          <div class="action-button">
             <v-btn block x-large color="secondary">Znajdź potrzebujących w okolicy</v-btn>
           </div>
 
@@ -89,14 +89,11 @@ export default class VolunteerLandingPageView extends Vue {
 <style scoped>
 .v-btn:not(.v-btn--round).v-size--x-large {
   min-height: 8rem;
-}
-
-.v-btn:not(.v-btn--round).v-size--x-large {
   font-size: 2rem;
 }
 
-.find-boomers {
-  padding: 0 0 1rem 0;
+.v-divider {
+  margin: 1rem 0 1rem 0;
 }
 
 .list-title {
