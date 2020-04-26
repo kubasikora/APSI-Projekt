@@ -64,6 +64,7 @@ export default class ListOfTasks extends Vue {
 .boomer-name {
   font-size: 1.2rem;
   color: #5b5f97;
+  margin-left: 1rem;
 }
 
 .v-expansion-panel--active > .v-expansion-panel-header {
