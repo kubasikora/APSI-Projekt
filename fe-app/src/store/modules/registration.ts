@@ -12,7 +12,6 @@ export default class Registration extends VuexModule {
   @Mutation
   setNewData(userData: RegistrationData): void {
     this.userData = userData;
-    console.log('set',this.userData)
   }
 
   @Mutation
@@ -90,12 +89,10 @@ export default class Registration extends VuexModule {
     this.context.commit("setLoadingState", true);
     const srv: RegistrationService = new RegistrationService();
     const response: RegistrationServiceResponse = await srv.register(this.userData);
-    //this.context.dispatch("resetData");
-    console.log('here',response)
     this.context.commit("setLoadingState", false);
+    this.context.dispatch("resetData")
     if(!response.state)
       this.context.commit("setErrorMessage", response.errorMessage);
-    
     return response.state;
   }
 

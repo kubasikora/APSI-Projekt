@@ -24,7 +24,7 @@
       label="Email"
       name="email"
       type="text"
-      :rules="rules.required"
+      :rules="[rules.required]"
       append-outer-icon="mdi-email-outline"
     />
     <v-text-field
@@ -43,7 +43,7 @@
             v-for="r in roles"
             :key="r.key"
             :label="`${r.label}`"
-            @mouseup="setRole(r.key)"
+            @mousedown="setRole(r.key)"
           ></v-radio>
            </v-radio-group>
            <v-alert v-if="errorMessage" border="left" colored-border type="error" elevation="2">{{ errorMessage }}</v-alert>
@@ -85,7 +85,7 @@ export default class RegistrationForm extends Vue {
       return {
         show1: false,
         role: '',
-        roles: [{label: "wolontariusz", key: "vol"}, {label:"potrzebujący", key: "boom"} ],
+        roles: [{label: "wolontariusz", key: "vol"}, {label:"potrzebujący", key: "BOOM"} ],
         rules: {
           required: (value: string) => !! value || 'Wymagane',
           min: (v: string) =>  v.length >= 8 || 'Hasło musi zawierać min. 8 znaków',

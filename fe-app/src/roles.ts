@@ -1,7 +1,8 @@
 enum Role {
   Guest, 
   Volunteer,
-  Boomer
+  Boomer,
+  Any
 };
 
 export default Role;

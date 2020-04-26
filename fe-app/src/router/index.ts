@@ -31,16 +31,28 @@ const routes = [
     meta: { requiresAuth: true, requiredRole: Role.Boomer }
   },
   {
+    path: "/b/newOrder",
+    name: "Boomer new order page",
+    component: () => import("@/views/BoomerNewOrder.vue"),
+    meta: { requiresAuth: true, requiredRole: Role.Boomer }
+  },
+  {
     path: "/registration",
     name: "Registration page",
     component: () => import("@/views/RegistrationPage.vue"),
     meta: { blockForAuth: true }
   },
   {
-   path: "/newAccount", 
-   name: "New account", 
-   component: () => import("@/views/CreatedNewAccount.vue"),
-   meta: { blockForAuth: true }
+    path: "/newAccount", 
+    name: "New account", 
+    component: () => import("@/views/CreatedNewAccount.vue"),
+    meta: { blockForAuth: true }
+  },
+  {
+    path: "/account/manage",
+    name: "Manage account",
+    component: () => import("@/views/AccountManagerPage.vue"),
+    meta: { requiresAuth: true, requiredRole: Role.Any }
   }
 ];
 
@@ -54,6 +66,14 @@ router.beforeEach((to, _, next) => {
   const auth: LoginService = new LoginService();
   const isLoggedIn: Boolean = auth.isLoggedIn()
   const role: Role = auth.getRole();
+
+  if(to.matched.some(record => record.meta && record.meta.requiresAuth && record.meta.requiredRole == Role.Any)){
+    if(isLoggedIn){ // zalogowany
+        next();
+    } else { // niezalogowany
+      next({ path: "/login", query: { redirect: to.fullPath } });
+    }
+  }
 
   if(to.matched.some(record => record.meta && record.meta.requiresAuth && record.meta.requiredRole == Role.Boomer)){
     if(isLoggedIn){
