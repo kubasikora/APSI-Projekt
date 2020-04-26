@@ -37,7 +37,6 @@ class OrderFilter(FilterSet):
         return queryset
 
 
-
 # Create your views here.
 class OrderList(generics.ListCreateAPIView):
     queryset = Order.objects.all()
@@ -60,15 +59,15 @@ class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
+#Wyszukuje ordersy w odleglosci przekazanej jako parametr od lokalizacji wolontariusza
 class OrderInRadius(generics.ListAPIView):
     serializer_class = OrderSerializer
-    lookup_url_kwarg_id = "pk"
     lookup_url_kwarg_dist = "dist"
 
     def get_queryset(self):
-        uid = self.kwargs.get(self.lookup_url_kwarg_id)
+        user = self.request.user.profile
         dist = self.kwargs.get(self.lookup_url_kwarg_dist)
-        orders = Order.objects.filter(pk=uid).values()
+        orders = Order.objects.filter(volunteer=user).values()
         coord_x_source = orders.values_list('coord_x', flat=True).last()
         coord_y_source = orders.values_list('coord_y', flat=True).last()
         orders = Order.objects.filter(coord_x__gt=coord_x_source - float(dist),
@@ -81,7 +80,7 @@ class OrderInRadius(generics.ListAPIView):
             coord_y_des = order.coord_y
             dist_cal = sqrt((coord_x_source - coord_x_des) ** 2 + (coord_y_source - coord_y_des) ** 2)
             print(dist_cal)
-            if dist_cal <= float(dist) and order.pk != int(uid):
+            if dist_cal <= float(dist) and order.pk != int(user.pk):
                 idx.append(order.pk)
 
         orders = Order.objects.filter(id__in=idx)
@@ -92,3 +91,9 @@ class AssignedOrders(generics.ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user.profile
         return Order.objects.filter(volunteer=user, status="accepted")
+
+class CreatedOrders(generics.ListCreateAPIView):
+    serializer_class = OrderSerializer
+    def get_queryset(self):
+        user = self.request.user.profile
+        return Order.objects.filter(boomer=user, status="created")
