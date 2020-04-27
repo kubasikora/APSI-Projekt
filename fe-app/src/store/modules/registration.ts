@@ -90,9 +90,9 @@ export default class Registration extends VuexModule {
     const srv: RegistrationService = new RegistrationService();
     const response: RegistrationServiceResponse = await srv.register(this.userData);
     this.context.commit("setLoadingState", false);
-    this.context.dispatch("resetData")
     if(!response.state)
       this.context.commit("setErrorMessage", response.errorMessage);
+    this.context.dispatch("resetData")
     return response.state;
   }
 

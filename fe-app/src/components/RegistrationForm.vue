@@ -38,16 +38,20 @@
             @click:append="show1 = !show1"
             @input="setPassword"
           ></v-text-field>
-           <v-radio-group row>
+           <v-radio-group v-model="role" row>
           <v-radio
             v-for="r in roles"
             :key="r.key"
             :label="`${r.label}`"
-            @mousedown="setRole(r.key)"
+            :value="`${r.key}`"
           ></v-radio>
            </v-radio-group>
            <v-alert v-if="errorMessage" border="left" colored-border type="error" elevation="2">{{ errorMessage }}</v-alert>
+           <v-spacer />
+        <v-btn color="accent" @click="cancelRegistration"> Anuluj </v-btn>
+        <v-btn color="primary" @click="createNewAccount">Stwórz nowe konto</v-btn>
   </v-form>
+        
 </template>
 
 <script lang="ts">
@@ -61,6 +65,7 @@ export default class RegistrationForm extends Vue {
     @register.State
     public userData: RegistrationData
 
+    public role: String = ''
     @register.State
     public errorMessage: String
 
@@ -81,10 +86,27 @@ export default class RegistrationForm extends Vue {
 
     @register.Action
     public setPassword: (newPassword: String) => void
+
+    @register.Action
+    public resetData: () => void;
+@register.Action
+  public registerNewAccount: () => Promise<boolean>
+ 
+  public async createNewAccount(): Promise<void> {
+    this.setRole(this.role)
+    const response = await this.registerNewAccount();
+    if(response){
+      this.$router.push({name: "New account"});
+    }
+  }
+
+    public cancelRegistration(): void {
+       this.resetData();
+       this.$router.push({name: "Login"});
+    };
      data () {
       return {
         show1: false,
-        role: '',
         roles: [{label: "wolontariusz", key: "vol"}, {label:"potrzebujący", key: "BOOM"} ],
         rules: {
           required: (value: string) => !! value || 'Wymagane',
