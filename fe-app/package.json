@@ -11,7 +11,6 @@
     "@mdi/font": "^5.1.45",
     "@types/js-cookie": "^2.2.6",
     "@types/leaflet": "^1.5.12",
-    "@types/node": "^13.13.5",
     "@types/qs": "^6.9.2",
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
@@ -31,6 +30,7 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.19",
+    "@types/node": "^13.11.1",
     "@vue/cli-plugin-babel": "~4.2.0",
     "@vue/cli-plugin-router": "~4.2.0",
     "@vue/cli-plugin-typescript": "~4.2.0",
