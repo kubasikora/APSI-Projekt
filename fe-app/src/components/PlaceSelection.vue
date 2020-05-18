@@ -1,5 +1,7 @@
 <template>
-    <div class= "map-card">
+<div><v-lazy>
+    <div class= "map-card" >
+        
          <l-map
       class = "map"
       :zoom="zoom"
@@ -14,11 +16,21 @@
      @update:latLng="updateMarker"
      ></l-marker>
     </l-map>
+        
   </div>
+  </v-lazy>
+    <v-btn v-if="showButtons"
+            color="primary"
+            @click="nextPage"
+          >
+            Dalej
+          </v-btn>
+          <v-btn v-if="showButtons" color="info" @click="updateOrderElement(1)">Wróć</v-btn>
+</div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import {LMap, LTileLayer, LMarker} from 'vue2-leaflet';
 import { LatLng } from "leaflet";
 import { namespace } from "vuex-class";
@@ -41,9 +53,11 @@ export default class PlaceSelection extends Vue {
     private marker: LatLng = new LatLng(0,0)
     private drag : Boolean = true
 
+     @Prop({default: true}) readonly showButtons: Boolean
     // @login.State
     // public loading: Boolean;
-
+    @order.Action
+    private updateOrderElement: (el: Number)=> void
    @order.Action
     public setCoordinates: (coordinates: Array<number>) => void
     private zoomUpdated (zoom: Number) : void{
@@ -54,8 +68,12 @@ export default class PlaceSelection extends Vue {
     }
     updateMarker(marker: L.LatLng){
        this.marker = marker
-       this.setCoordinates([this.marker.lat, this.marker.lng])
     }
+    nextPage(){
+        this.setCoordinates([this.marker.lat, this.marker.lng])
+        this.updateOrderElement(3)
+    }
+    
     mounted() {
        {
        if (navigator.geolocation) {
@@ -69,6 +87,7 @@ export default class PlaceSelection extends Vue {
       error => {
         console.log("Error getting location");
       });
+      
   }
 }
   }

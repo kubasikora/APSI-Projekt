@@ -48,6 +48,12 @@
         </v-card>
          </v-col>       
       </v-row>
+      <v-btn
+            color="primary"
+            @click="nextPage"
+          >
+            Dalej
+          </v-btn>
 
   </div>
 </template>
@@ -79,7 +85,8 @@ export default class NewOrderList extends Vue {
             icon: 'hospital-box-outline'}
             ,{category: "Inne",
             icon:  "check"}]
-
+    @orders.Action
+    private updateOrderElement: (el: Number)=> void
     @orders.Action
     private setNewProducts: (products: Array<Product>) => void
     private addNewProduct(){
@@ -87,6 +94,10 @@ export default class NewOrderList extends Vue {
         this.productList.push(this.newProduct)
         this.newProduct = new Product()
         this.setNewProducts(this.productList)
+    }
+    private nextPage(){
+        const id: Number = 2;
+        this.updateOrderElement(id)
     }
     private getCategory(cat: String){
         const category = this.categories.find(category => {if (category.category == cat) return `mdi-`+category.icon})

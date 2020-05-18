@@ -14,8 +14,9 @@ export default class OrdersService {
         const data: APIOrderBody = {
             coord_x : newOrder.coordinates.x,
             coord_y: newOrder.coordinates.y,
-            description: JSON.stringify(newOrder.products)
+            description: JSON.stringify({products: newOrder.products, extra: newOrder.extra,payment: newOrder.payment})
         };
+        console.log(data)
         apiClient.defaults.headers.post["X-CSRFTOKEN"] = Cookies.get("csrftoken");
         const response = await apiClient.post("/orders/", data);
         return new OrderResponse(true, response.status, response.statusText);
