@@ -53,6 +53,12 @@ const routes = [
     name: "Manage account",
     component: () => import("@/views/AccountManagerPage.vue"),
     meta: { requiresAuth: true, requiredRole: Role.Any }
+  },
+  {
+    path: "/v/findNewOrder",
+    name: "Find new order",
+    component: () => import("@/views/FindYourBoomerPage.vue"),
+    meta: { requiresAuth: true, requiredRole: Role.Volunteer }
   }
 ];
 

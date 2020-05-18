@@ -3,10 +3,11 @@ import Coordinates from './Coordinates'
 import { runInThisContext } from 'vm';
 
 export default class Order {
-    constructor(products: Array<Product>= [] , coordinates: Coordinates, extra: String){
+    constructor(products: Array<Product>= [] , coordinates: Coordinates, extra: String, payment: String){
         this._products = products;
         this._coordinates = coordinates;
         this._extra = extra
+        this._payment = payment
     }
     get products():  Array<Product> {
         return this._products
@@ -17,6 +18,9 @@ export default class Order {
     get extra(): String {
         return this._extra
     }
+    get payment(): String{
+        return this._payment
+    }
     set products(newproducts:  Array<Product>) {
         this._products = newproducts
     }
@@ -25,6 +29,9 @@ export default class Order {
     }
     set extra(extra: String){
         this._extra = extra
+    }
+    set payment(payment: String){
+        this._payment = payment
     }
     
 
@@ -36,4 +43,5 @@ export default class Order {
     private _products: Array<Product>;
     private _coordinates: Coordinates;
     private _extra: String
+    private _payment: String
   };
