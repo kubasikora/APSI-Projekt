@@ -1,3 +1,4 @@
+import math
 from math import sqrt
 from django_filters import FilterSet
 from .serializers import OrderSerializer
@@ -62,25 +63,40 @@ class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
 #Wyszukuje ordersy w odleglosci przekazanej jako parametr od lokalizacji wolontariusza
 class OrderInRadius(generics.ListAPIView):
     serializer_class = OrderSerializer
+    lookup_url_kwarg_coordx = "coordx"
+    lookup_url_kwarg_coordy = "coordy"
     lookup_url_kwarg_dist = "dist"
+    R = 6378.1  # Radius of the Earth
+    brng = 1.57  # Bearing is 90 degrees converted to radians.
 
     def get_queryset(self):
-        user = self.request.user.profile
-        dist = self.kwargs.get(self.lookup_url_kwarg_dist)
-        orders = Order.objects.filter(volunteer=user).values()
-        coord_x_source = orders.values_list('coord_x', flat=True).last()
-        coord_y_source = orders.values_list('coord_y', flat=True).last()
-        orders = Order.objects.filter(coord_x__gt=coord_x_source - float(dist),
-                                      coord_x__lt=coord_x_source + float(dist),
-                                      coord_y__gt=coord_y_source - float(dist),
-                                      coord_y__lt=coord_y_source + float(dist))
+        user = self.request.user.username
+        coordx = float(self.kwargs.get(self.lookup_url_kwarg_coordx))
+        coordy = float(self.kwargs.get(self.lookup_url_kwarg_coordy))
+        dist = float(self.kwargs.get(self.lookup_url_kwarg_dist))
+
+        lat1 = math.radians(coordx)
+        lon1 = math.radians(coordy)
+
+        lat2 = math.asin(math.sin(lat1) * math.cos(dist / self.R) +
+                         math.cos(lat1) * math.sin(dist / self.R) * math.cos(self.brng))
+
+        lon2 = lon1 + math.atan2(math.sin(self.brng) * math.sin(dist / self.R) * math.cos(lat1),
+                                 math.cos(dist / self.R) - math.sin(lat1) * math.sin(lat2))
+
+        lat2 = math.degrees(lat2)
+        lon2 = math.degrees(lon2)
+        radius = sqrt((lat2 - coordx)**2 + (lon2 - coordy)**2)
+        orders = Order.objects.filter(coord_x__gt=coordx - radius,
+                                      coord_x__lt=coordx + radius,
+                                      coord_y__gt=coordy - radius,
+                                      coord_y__lt=coordy + radius)
         idx = []
         for order in orders:
             coord_x_des = order.coord_x
             coord_y_des = order.coord_y
-            dist_cal = sqrt((coord_x_source - coord_x_des) ** 2 + (coord_y_source - coord_y_des) ** 2)
-            print(dist_cal)
-            if dist_cal <= float(dist) and order.pk != int(user.pk):
+            dist_cal = sqrt((coordx - coord_x_des) ** 2 + (coordy - coord_y_des) ** 2)
+            if dist_cal <= radius and order.volunteer != str(user):
                 idx.append(order.pk)
 
         orders = Order.objects.filter(id__in=idx)
