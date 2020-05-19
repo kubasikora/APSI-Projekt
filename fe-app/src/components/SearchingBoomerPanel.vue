@@ -23,7 +23,7 @@
       >
         <template v-slot:activator="{ on }">
           <v-btn
-                  color="pink"
+                 color="warning"
                   dark
                   small
                   left
@@ -61,6 +61,10 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+     </v-row>
+     <v-row align="center"
+            justify="center">
+       <v-btn large color="accent" @click="search">Szukaj</v-btn>
      </v-row>
 </div>
   
