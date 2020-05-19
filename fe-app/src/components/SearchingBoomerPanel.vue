@@ -8,7 +8,6 @@
           :max="3000"
           :disabled="false"
           :readonly="false"
-          :vertical="vertical"
            :thumb-size="50"
             thumb-label="always"
           label="Zasięg wyszukiwania"
@@ -74,6 +73,9 @@
 import { Component, Vue } from "vue-property-decorator";
 import { namespace } from "vuex-class";
 import PlaceSelection from "@/components/PlaceSelection.vue";
+
+const tasks = namespace("Tasks");
+const order = namespace("BoomerOrders");
 @Component({
   components: {
   PlaceSelection
@@ -82,7 +84,29 @@ import PlaceSelection from "@/components/PlaceSelection.vue";
 export default class SearchingBoomerPanel extends Vue {
      private distance: Number= 100;
      private dialog: Boolean = false;
-  
+      @order.Action
+    public setCoordinates: (coordinates: Array<number>) => void
+     @tasks.Action
+     public getCreatedOrders: (distance: Number) => void
+    
+    search(){
+
+        this.getCreatedOrders(this.distance)
+    }
+     mounted() {
+       {
+       if (navigator.geolocation) {
+         navigator.geolocation.getCurrentPosition(position => {
+            this.setCoordinates([position.coords.latitude, position.coords.longitude])
+
+      },
+      error => {
+        console.log("Error getting location");
+      });
+      
+  }
+}
+  }
 
 }
 </script>

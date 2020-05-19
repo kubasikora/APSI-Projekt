@@ -4,6 +4,7 @@ import Login from "@/store/modules/login";
 import Registration from "@/store/modules/registration"
 import BoomerOrders from "@/store/modules/boomerOrders"
 import Account from "@/store/modules/account";
+import Tasks from "@/store/modules/tasks"
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -11,7 +12,8 @@ const store = new Vuex.Store({
     Login,
     Registration,
     BoomerOrders,
-    Account
+    Account,
+    Tasks
   }
 });
 
