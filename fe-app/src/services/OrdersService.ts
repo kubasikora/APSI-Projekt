@@ -36,16 +36,19 @@ export default class OrdersService {
           const response = await apiClient.get('/orders/orderInRadius_'+coordinates.x+'_'+coordinates.y+'_'+distance);
          
           const data = response.data
+          console.log(data)
           let tasksArray : Array<TaskVolunteer> = []
           data.forEach((el: { description: string; id: Number; coord_x: Number | undefined; coord_y: Number | undefined; boomer: String; }) => {
               const info = JSON.parse(el.description)
+              console.log(info)
               let products : Array<Product> = []
               info.products.forEach((prod: { _description: String | undefined; _category: String | undefined; })=>{
                   products.push(new Product(prod._description, prod._category))
               })
-              tasksArray.push(new TaskVolunteer(el.id, new Order(products,new Coordinates(el.coord_x, el.coord_y),info._extra, info._payment),el.boomer))
+              tasksArray.push(new TaskVolunteer(el.id, new Order(products,new Coordinates(el.coord_x, el.coord_y),info.extra, info.payment),el.boomer))
 
           })
+          console.log(tasksArray)
         
           return new TasksVolunteerResponse(true, response.status, tasksArray);
         } catch (err) {

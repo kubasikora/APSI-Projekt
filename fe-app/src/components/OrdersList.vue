@@ -1,42 +1,49 @@
 <template>
 <div style="margin-top: 1%">
   <v-expansion-panels
-    :hover="true">
+    :hover="true"
+    v-if="createdTasks.length!=0">
 
     <v-expansion-panel v-for="task in createdTasks" :key="task.id">
       <v-expansion-panel-header>
         <span class="icon">
-          <v-icon>mdi-account</v-icon>
+          <v-icon>mdi-clipboard-list-outline</v-icon>
         </span>
-        <span class="boomer-name"><strong>{{ task.boomer }}</strong></span>
+        <span class="boomer-name">
+            <strong style="float: left">{{ task.boomer }}</strong>
+     </span>
+     <span style="margin-right: 1%">{{task.order.products.length}} produktów </span>
       </v-expansion-panel-header>
 
       <v-expansion-panel-content>
         <v-container>
-          <!-- <v-row>
+          <v-row>
             <v-col>
               <v-card class="pa-2" tile>
-                <strong>Adres: </strong>
-                <span>{{ task.residence.street + ' ' + task.residence.homeNumber }}</span>
-                <span v-if="task.residence.aptNumber">{{ '/' + task.residence.aptNumber }}</span>
+                <strong>Komentarz: </strong>
+                <span>{{ task.order.extra }} </span>
               </v-card>
             </v-col>
             <v-col>
-              <v-card class="pa-2" tile><strong>Numer telefonu:</strong> {{ task.phoneNumber }}</v-card>
+              <v-card class="pa-2" tile><strong>Płatność:</strong> {{ task.order.payment }}</v-card>
             </v-col>
           </v-row>
           <v-row>
             <v-col>
-              <v-card class="pa-2" tile><strong>Data dostarczenia:</strong> {{ task.due }}</v-card>
             </v-col>
             <v-col>
-              <v-btn color="accent" v-on:click="getList(task.listID)">Zobacz listę</v-btn>
+                <v-btn color="info">Zobacz listę</v-btn>
+                <v-btn color="accent">Zrealizuj</v-btn>
             </v-col>
-          </v-row> -->
+          </v-row>
         </v-container>
       </v-expansion-panel-content>
-    </v-expansion-panel>
+    </v-expansion-panel> 
   </v-expansion-panels>
+    <v-sheet v-else color="secondary lighten-1" style="padding: 0.5%; 
+    color:white; 
+    text-align: center; 
+    margin-top: 4%">Brak zamówień</v-sheet>
   </div>
 </template>
 
@@ -61,5 +68,6 @@ export default class OrdersList extends Vue{
 </script>
 
 <style>
+
 
 </style>
