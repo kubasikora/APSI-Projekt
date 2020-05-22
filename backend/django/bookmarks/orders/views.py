@@ -63,6 +63,8 @@ class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
 class ProductList(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
     lookup_url_kwarg_orderPk = "orderPK"
+    filter_backends = [DjangoFilterBackend]
+    filter_fields = ['productType']
     def get_queryset(self):
         orderPK = self.kwargs.get(self.lookup_url_kwarg_orderPk)
         productList = Product.objects.filter(order__in=orderPK)
