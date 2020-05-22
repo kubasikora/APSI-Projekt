@@ -18,3 +18,11 @@ class Order(models.Model):
     coord_x = models.FloatField(default=0)
     coord_y = models.FloatField(default=0)
     status = models.CharField(max_length=32, choices = STATUS_CHOICES, default ='created')
+
+class Product(models.Model):
+    name = models.CharField(max_length=32)
+    productType = models.CharField(max_length=32)
+    countity = models.FloatField(default=0)
+    price = models.FloatField(default=0)
+    order = models.ForeignKey(Order, related_name='products', on_delete=models.CASCADE)
+    isBought = models.BooleanField(default=False)
