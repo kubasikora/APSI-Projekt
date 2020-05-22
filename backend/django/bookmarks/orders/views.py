@@ -1,8 +1,8 @@
 import math
 from math import sqrt
 from django_filters import FilterSet
-from .serializers import OrderSerializer
-from .models import Order
+from .serializers import OrderSerializer, ProductSerializer
+from .models import Order, Product
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
@@ -59,6 +59,14 @@ class OrderList(generics.ListCreateAPIView):
 class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+
+class ProductList(generics.ListCreateAPIView):
+    serializer_class = ProductSerializer
+    lookup_url_kwarg_orderPk = "orderPK"
+    def get_queryset(self):
+        orderPK = self.kwargs.get(self.lookup_url_kwarg_orderPk)
+        productList = Product.objects.filter(order__in=orderPK)
+        return productList
 
 #Wyszukuje ordersy w odleglosci przekazanej jako parametr od lokalizacji wolontariusza
 class OrderInRadius(generics.ListAPIView):
