@@ -10,7 +10,6 @@ STATUS_CHOICES = [
 
 # Create your models here.
 class Order(models.Model):
-    description = models.CharField(max_length=1024)
     boomer = models.ForeignKey(Profile, related_name='orders',
                                on_delete=models.SET_NULL, null=True)
     volunteer = models.ForeignKey(Profile, related_name='tasks',
