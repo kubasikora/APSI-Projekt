@@ -1,13 +1,13 @@
 <template>
-  <v-expansion-panels
-    :hover="true">
-
-    <v-expansion-panel v-for="task in tasks" :key="task.listID">
+  <v-expansion-panels :hover="true">
+    <v-expansion-panel v-for="task in assignedTasks" :key="task.id">
       <v-expansion-panel-header>
         <span class="icon">
           <v-icon>mdi-account</v-icon>
         </span>
-        <span class="boomer-name"><strong>{{ task.name }}</strong></span>
+        <span class="boomer-name">
+          <strong>{{ task.boomer }}</strong>
+        </span>
       </v-expansion-panel-header>
 
       <v-expansion-panel-content>
@@ -15,21 +15,12 @@
           <v-row>
             <v-col>
               <v-card class="pa-2" tile>
-                <strong>Adres: </strong>
-                <span>{{ task.residence.street + ' ' + task.residence.homeNumber }}</span>
-                <span v-if="task.residence.aptNumber">{{ '/' + task.residence.aptNumber }}</span>
+                <strong>Współrzędne:</strong>
+                <span>{{ task.order.getCoordinates().x + ' ' + task.order.getCoordinates().y }}</span>
               </v-card>
             </v-col>
             <v-col>
-              <v-card class="pa-2" tile><strong>Numer telefonu:</strong> {{ task.phoneNumber }}</v-card>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-card class="pa-2" tile><strong>Data dostarczenia:</strong> {{ task.due }}</v-card>
-            </v-col>
-            <v-col>
-              <v-btn color="accent" v-on:click="getList(task.listID)">Zobacz listę</v-btn>
+              <v-btn color="accent" v-on:click="getList()">Zobacz listę</v-btn>
             </v-col>
           </v-row>
         </v-container>
@@ -40,15 +31,22 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { Boomer } from "src/models/TaskInterface";
+import TaskVolunteer from "../models/TaskVolunteer";
+import { namespace } from "vuex-class";
 
+const order = namespace("VolunteerOrders");
 @Component({
   props: {
-    tasks: Array as () => Boomer[],
+    tasks: Array as () => TaskVolunteer[]
   }
 })
 export default class ListOfTasks extends Vue {
-    
+  @order.State
+  public assignedTasks: Array<TaskVolunteer>;
+  
+  getList() {
+    console.log("Lista");
+  }
 }
 </script>
 
@@ -59,7 +57,7 @@ export default class ListOfTasks extends Vue {
 
 .mdi::before {
   color: #5b5f97;
-}  
+}
 
 .boomer-name {
   font-size: 1.2rem;
@@ -68,7 +66,7 @@ export default class ListOfTasks extends Vue {
 }
 
 .v-expansion-panel--active > .v-expansion-panel-header {
-  background-color: #b8b8d1;  
+  background-color: #b8b8d1;
   color: #fff;
 }
 
@@ -79,5 +77,4 @@ export default class ListOfTasks extends Vue {
 .v-expansion-panel--active > .v-expansion-panel-header .boomer-name {
   color: #fff;
 }
-
 </style>
