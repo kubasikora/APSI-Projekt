@@ -1,21 +1,12 @@
 export default class Product {
-    constructor(description: String = "", category: String = ""){
-        this._description = description;
-        this._category = category
+    constructor(name: String = "", productType: String = "", countity: Number=0){
+        this.name = name;
+        this.productType = productType
+        this.countity = countity
     }
-    get description(): String {
-        return this._description
-    }
-    get category(): String {
-        return this._category
-    }
-    set description(newDescription: String) {
-        this._description = newDescription
-    }
-    set category(newCategory: String) {
-        this._category = newCategory
-    }
+   
   
-    private _description: String;
-    private _category: String
+    public name: String;
+    public productType: String
+    public countity: Number
   };

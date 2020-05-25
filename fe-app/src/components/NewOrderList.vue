@@ -2,11 +2,11 @@
     <div>
       <v-row>
           <v-col cols="1"/>
-            <v-col cols="6">
+            <v-col cols="4">
             <v-text-field
               label="Wpisz nazwę produktu"
               solo
-              v-model="newProduct.description"
+              v-model="newProduct.name"
             ></v-text-field>
           </v-col>
           <v-col cols="3">
@@ -17,6 +17,15 @@
             solo
           ></v-select>
           </v-col>
+           <v-col cols="2">
+            <v-text-field
+              label="Ilość"
+              solo
+                type="number"
+              v-model="newProduct.countity"
+            ></v-text-field>
+          </v-col>
+          
         <v-col cols="2">
           <v-btn  @click="addNewProduct" color="error">Dodaj</v-btn>
         </v-col>
@@ -35,10 +44,13 @@
             active
           >
             <v-list-item-icon>
-              <v-icon>{{getCategory(product.category)}}</v-icon>
+              <v-icon>{{getCategory(product.productType)}}</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title v-text="product.description"></v-list-item-title>
+              <v-list-item-title v-text="product.name" style="float: left; width: 50%">{
+              </v-list-item-title>
+              <v-list-item-subtitle v-text="product.countity" style="float: right; width: 50%">
+              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-divider  :key="i"/>
@@ -90,7 +102,7 @@ export default class NewOrderList extends Vue {
     @orders.Action
     private setNewProducts: (products: Array<Product>) => void
     private addNewProduct(){
-        this.newProduct.category = this.selectedCategory
+        this.newProduct.productType = this.selectedCategory
         this.productList.push(this.newProduct)
         this.newProduct = new Product()
         this.setNewProducts(this.productList)

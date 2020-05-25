@@ -9,16 +9,13 @@ export default class Tasks extends VuexModule {
     createdTasks : Array<TaskVolunteer> = []
 
     @Mutation
-    setCreatedTasks(newTasks: Array<TaskVolunteer>){
+    setCreatedTasks(newTasks: Array<TaskVolunteer>):void{
         this.createdTasks = newTasks;
     }
     @Action
      async getCreatedOrders(distance: Number): Promise<void> {
-    //this.context.commit("setLoadingState", true);
     console.log('orders')
     const coords = this.context.rootState.BoomerOrders.newOrder.coordinates
-    console.log(this.context)
-    console.log(distance, coords)
 
     const srv: OrdersService = new OrdersService();
     //const response: TasksResponse 
