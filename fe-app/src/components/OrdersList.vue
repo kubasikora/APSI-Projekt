@@ -12,7 +12,7 @@
         <span class="boomer-name">
             <strong style="float: left">{{ task.boomer }}</strong>
      </span>
-     <span style="margin-right: 1%">{{task.order.products.length}} produktów </span>
+     <!-- <span style="margin-right: 1%">{{task.order.products.length}} produktów </span> -->
       </v-expansion-panel-header>
 
       <v-expansion-panel-content>

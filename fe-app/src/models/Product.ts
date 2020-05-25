@@ -1,5 +1,5 @@
 export default class Product {
-    constructor(name: String = "", productType: String = "", countity: Number=0){
+    constructor(name: String = "", productType: String = "", countity: String=''){
         this.name = name;
         this.productType = productType
         this.countity = countity
@@ -8,5 +8,5 @@ export default class Product {
   
     public name: String;
     public productType: String
-    public countity: Number
+    public countity: String
   };

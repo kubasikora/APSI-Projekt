@@ -10,6 +10,8 @@ import TasksVolunteerResponse from '@/models/TasksVolunteerResponse';
 interface APIOrderBody {
     coord_x: Number,
     coord_y: Number,
+    comment: String,
+    paymentMethod: String
   }
 export default class OrdersService {
     public async addOrder(newOrder: Order): Promise<OrderResponse> {
@@ -17,9 +19,9 @@ export default class OrdersService {
         const data: APIOrderBody = {
             coord_x : newOrder.coordinates.x,
             coord_y: newOrder.coordinates.y,
-            //description: JSON.stringify({products: newOrder.products, extra: newOrder.extra,payment: newOrder.payment})
+            comment: newOrder.extra,
+            paymentMethod: newOrder.payment
         };
-        console.log(newOrder.products)
         apiClient.defaults.headers.post["X-CSRFTOKEN"] = Cookies.get("csrftoken");
         const response = await apiClient.post("/orders/", data);
         const id = response.data.id
@@ -48,14 +50,14 @@ export default class OrdersService {
           const data = response.data
           console.log('info',data)
           let tasksArray : Array<TaskVolunteer> = []
-          data.forEach((el: { description: string; id: Number; coord_x: Number | undefined; coord_y: Number | undefined; boomer: String; }) => {
+          data.forEach((el: { id: Number; coord_x: Number | undefined; coord_y: Number | undefined; boomer: String; payment: String; comment: String}) => {
             //   const info = JSON.parse(el.description)
             //   console.log(info)
             //   let products : Array<Product> = []
             //   info.products.forEach((prod: { _description: String | undefined; _category: String | undefined; })=>{
             //       products.push(new Product(prod._description, prod._category))
             //   })
-              tasksArray.push(new TaskVolunteer(el.id, new Order([],new Coordinates(el.coord_x, el.coord_y),'',''),el.boomer))
+              tasksArray.push(new TaskVolunteer(el.id, new Order([],new Coordinates(el.coord_x, el.coord_y),el.comment, el.payment),el.boomer))
 
           })
           console.log('tasks',tasksArray)

@@ -21,7 +21,6 @@
             <v-text-field
               label="Ilość"
               solo
-                type="number"
               v-model="newProduct.countity"
             ></v-text-field>
           </v-col>
