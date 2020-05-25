@@ -71,6 +71,14 @@ class ProductList(generics.ListCreateAPIView):
         orderPK = self.kwargs.get(self.lookup_url_kwarg_orderPk)
         productList = Product.objects.filter(order__in=orderPK)
         return productList
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        results = Product.objects.all()
+        output_serializer = ProductSerializer(results, many=True)
+        data = output_serializer.data[:]
+        return Response(data)
 
 class ProductListDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
