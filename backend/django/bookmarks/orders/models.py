@@ -16,12 +16,14 @@ class Order(models.Model):
                                   on_delete=models.SET_NULL, null=True, blank=True)
     coord_x = models.FloatField(default=0)
     coord_y = models.FloatField(default=0)
+    comment = models.CharField(max_length=512, default='')
+    paymentMethod = models.CharField(max_length=32, default='')
     status = models.CharField(max_length=32, choices = STATUS_CHOICES, default ='created')
 
 class Product(models.Model):
     name = models.CharField(max_length=32)
     productType = models.CharField(max_length=32)
-    countity = models.FloatField(default=0)
+    countity = models.CharField(max_length=32, default='')
     price = models.FloatField(default=0)
     order = models.ForeignKey(Order, related_name='products', on_delete=models.CASCADE)
     isBought = models.BooleanField(default=False)
