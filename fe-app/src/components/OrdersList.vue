@@ -33,7 +33,7 @@
             </v-col>
             <v-col>
                 <v-btn color="info">Zobacz listę</v-btn>
-                <v-btn color="accent">Zrealizuj</v-btn>
+                <v-btn color="accent" >Zrealizuj</v-btn>
             </v-col>
           </v-row>
         </v-container>
