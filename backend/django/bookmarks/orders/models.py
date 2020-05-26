@@ -16,8 +16,8 @@ class Order(models.Model):
                                   on_delete=models.SET_NULL, null=True, blank=True)
     coord_x = models.FloatField(default=0)
     coord_y = models.FloatField(default=0)
-    comment = models.CharField(max_length=512, default='')
-    paymentMethod = models.CharField(max_length=32, default='')
+    comment = models.CharField(max_length=512, default='', blank=True)
+    paymentMethod = models.CharField(max_length=32, default='', blank=True)
     status = models.CharField(max_length=32, choices = STATUS_CHOICES, default ='created')
 
 class Product(models.Model):
