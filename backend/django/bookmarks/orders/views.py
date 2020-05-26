@@ -132,6 +132,15 @@ class AssignedOrders(generics.ListCreateAPIView):
         user = self.request.user.profile
         return Order.objects.filter(volunteer=user, status="accepted")
 
+class AssignOrder(generics.ListCreateAPIView):
+    serializer_class = OrderSerializer
+    lookup_url_kwarg_orderPk = "orderPK"
+    def get_queryset(self):
+        user = self.request.user.profile
+        orderPK = self.kwargs.get(self.lookup_url_kwarg_orderPk)
+        if (user.user_type == "vol"):
+            Order.objects.filter(id__in=orderPK).update(volunteer=user, status='accepted')
+
 class CreatedOrders(generics.ListCreateAPIView):
     serializer_class = OrderSerializer
     def get_queryset(self):
