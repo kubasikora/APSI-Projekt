@@ -7,10 +7,15 @@ import TaskVolunteer from '@/models/TaskVolunteer';
 export default class Tasks extends VuexModule {
 
     createdTasks : Array<TaskVolunteer> = []
+    distance : Number = 0
 
     @Mutation
     setCreatedTasks(newTasks: Array<TaskVolunteer>):void{
         this.createdTasks = newTasks;
+    }
+    @Mutation
+    setDistance(dist: Number): void {
+        this.distance = dist
     }
     @Action
      async getCreatedOrders(distance: Number): Promise<void> {
@@ -20,9 +25,17 @@ export default class Tasks extends VuexModule {
     const srv: OrdersService = new OrdersService();
     //const response: TasksResponse 
     const response : TasksVolunteerResponse = await srv.getOrders(coords, distance);
-    this.context.commit("setCreatedTasks", response.taskArray);
-
-      
+    this.context.commit("setDistance", distance)
+    this.context.commit("setCreatedTasks", response.taskArray);      
     
+  }
+  @Action
+  async takeOrder(id: Number): Promise<void> {
+      const srv: OrdersService = new OrdersService();
+      const coords = this.context.rootState.BoomerOrders.newOrder.coordinates
+
+      console.log(id)
+      const response : TasksVolunteerResponse = await srv.getOrders(coords, this.distance);
+     this.context.commit("setCreatedTasks", response.taskArray);  
   }
 }

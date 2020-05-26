@@ -33,7 +33,20 @@
             </v-col>
             <v-col>
                 <v-btn color="info">Zobacz listę</v-btn>
-                <v-btn color="accent" >Zrealizuj</v-btn>
+                 <v-dialog v-model="dialog" persistent max-width="40%">
+                     <template v-slot:activator="{ on }">
+                          <v-btn color="accent"  v-on="on" >Zrealizuj</v-btn>
+                     </template>
+                 <v-card>
+                 <v-card-title class="headline">Realizacja zamówienia</v-card-title>
+                    <v-card-text>..........NIE WIEM CO TU NAPISAĆ.......</v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="accent" text @click="confirm(task.order.id) ">Zgadzam się</v-btn>
+                        <v-btn  color="info" text @click="dialog = false">Anuluj</v-btn>
+                    </v-card-actions>
+                </v-card>
+             </v-dialog>
             </v-col>
           </v-row>
         </v-container>
@@ -61,6 +74,15 @@ export default class OrdersList extends Vue{
  
   @tasks.State
   public createdTasks: Array<TaskVolunteer>
+  @tasks.Action
+  public takeOrder:(id: Number)=>Promise<void>
+
+    public  dialog: Boolean = false
+  public confirm(id:Number):void{
+      this.takeOrder(id)
+      this.dialog = false
+
+  }
 
 
 
