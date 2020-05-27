@@ -42,7 +42,7 @@
                     <v-card-text>..........NIE WIEM CO TU NAPISAĆ.......</v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="accent" text @click="confirm(task.order.id) ">Zgadzam się</v-btn>
+                        <v-btn color="accent" text @click="confirm(task.id) ">Zgadzam się</v-btn>
                         <v-btn  color="info" text @click="dialog = false">Anuluj</v-btn>
                     </v-card-actions>
                 </v-card>
@@ -78,7 +78,8 @@ export default class OrdersList extends Vue{
   public takeOrder:(id: Number)=>Promise<void>
 
     public  dialog: Boolean = false
-  public confirm(id:Number):void{
+
+    public confirm(id:Number): void {
       this.takeOrder(id)
       this.dialog = false
 

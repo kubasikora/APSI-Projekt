@@ -69,4 +69,17 @@ export default class OrdersService {
           
         }
       }
+      public async assignToOrder(id: Number): Promise<void>{
+          try {
+            apiClient.defaults.headers.post["X-CSRFTOKEN"] = Cookies.get("csrftoken");
+            console.log('cookie', Cookies.get("csrftoken"))
+            const response = await apiClient.post("/orders/"+id+"/assignOrder");
+            console.log(response)
+
+          }
+          catch (err) {
+              const response = err.response
+               
+          }
+      }
 }

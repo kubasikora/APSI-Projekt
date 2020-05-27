@@ -35,6 +35,8 @@ export default class Tasks extends VuexModule {
       const coords = this.context.rootState.BoomerOrders.newOrder.coordinates
 
       console.log(id)
+      const resp = await srv.assignToOrder(id);
+      console.log(resp)
       const response : TasksVolunteerResponse = await srv.getOrders(coords, this.distance);
      this.context.commit("setCreatedTasks", response.taskArray);  
   }
