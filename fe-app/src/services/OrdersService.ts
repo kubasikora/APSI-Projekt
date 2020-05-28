@@ -69,17 +69,31 @@ export default class OrdersService {
           
         }
       }
+      
       public async assignToOrder(id: Number): Promise<void>{
-          try {
-            apiClient.defaults.headers.post["X-CSRFTOKEN"] = Cookies.get("csrftoken");
-            console.log('cookie', Cookies.get("csrftoken"))
-            const response = await apiClient.post("/orders/"+id+"/assignOrder");
-            console.log(response)
+        try {
+          apiClient.defaults.headers.post["X-CSRFTOKEN"] = Cookies.get("csrftoken");
+          console.log('cookie', Cookies.get("csrftoken"))
+          const response = await apiClient.post("/orders/"+id+"/assignOrder");
+          console.log(response)
 
-          }
-          catch (err) {
-              const response = err.response
-               
-          }
-      }
+        }
+        catch (err) {
+            const response = err.response
+             
+        }
+  }
+  public async  getUsersOrders(): Promise<TasksVolunteerResponse> {
+    try {
+      const response = await apiClient.get('/orders/assignedOrders');
+
+      const data = response.data;
+
+      return new TasksVolunteerResponse(true, response.status, []);
+    }
+    catch (err) {
+      const response = err.response;
+      return new TasksVolunteerResponse(false, response.status, null);
+    }
+  }
 }
