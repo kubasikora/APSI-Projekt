@@ -42,7 +42,7 @@
                     <v-card-text>..........NIE WIEM CO TU NAPISAĆ.......</v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="accent" text @click="confirm(task.id) ">Zgadzam się</v-btn>
+                        <v-btn color="accent" text @click="confirm(task) ">Zgadzam się</v-btn>
                         <v-btn  color="info" text @click="dialog = false">Anuluj</v-btn>
                     </v-card-actions>
                 </v-card>
@@ -63,7 +63,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { namespace } from "vuex-class";
-import TaskVolunteer from '@/models/TaskVolunteer.ts'
+import TaskVolunteer from "../models/TaskVolunteer";
 const tasks = namespace("Tasks");
 @Component({
   components: {
@@ -75,12 +75,12 @@ export default class OrdersList extends Vue{
   @tasks.State
   public createdTasks: Array<TaskVolunteer>
   @tasks.Action
-  public takeOrder:(id: Number)=>Promise<void>
+  public takeOrder:(task: TaskVolunteer)=>Promise<void>
 
     public  dialog: Boolean = false
 
-    public confirm(id:Number): void {
-      this.takeOrder(id)
+    public confirm(task: TaskVolunteer): void {
+      this.takeOrder(task)
       this.dialog = false
 
   }

@@ -30,13 +30,11 @@ export default class Tasks extends VuexModule {
     
   }
   @Action
-  async takeOrder(id: Number): Promise<void> {
+  async takeOrder(task: TaskVolunteer): Promise<void> {
       const srv: OrdersService = new OrdersService();
       const coords = this.context.rootState.BoomerOrders.newOrder.coordinates
 
-      console.log(id)
-      const resp = await srv.assignToOrder(id);
-      console.log(resp)
+      const resp = await srv.assignToOrder(task);
       const response : TasksVolunteerResponse = await srv.getOrders(coords, this.distance);
      this.context.commit("setCreatedTasks", response.taskArray);  
   }

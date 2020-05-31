@@ -6,6 +6,7 @@ import Coordinates from '@/models/Coordinates'
 import TaskVolunteer from '@/models/TaskVolunteer'
 import Product from '@/models/Product';
 import TasksVolunteerResponse from '@/models/TasksVolunteerResponse';
+import BoomerOrders from '@/store/modules/boomerOrders';
 
 interface APIOrderBody {
     coord_x: Number,
@@ -70,16 +71,28 @@ export default class OrdersService {
         }
       }
       
-      public async assignToOrder(id: Number): Promise<void>{
+      public async assignToOrder(order: TaskVolunteer): Promise<void>{
         try {
-          apiClient.defaults.headers.post["X-CSRFTOKEN"] = Cookies.get("csrftoken");
-          console.log('cookie', Cookies.get("csrftoken"))
-          const response = await apiClient.post("/orders/"+id+"/assignOrder");
-          console.log(response)
+        apiClient.defaults.headers.get["X-CSRFTOKEN"] = Cookies.get("csrftoken");
+         const me = await apiClient.get("/account/me");
+         const data = {
+            "status": "accepted",
+            "volunteer": Number(me.data.profile.id),
+            "boomer": order.boomer,
+            "coord_x": order.order.coordinates.x,
+            "coord_y": order.order.coordinates.y,
+            "comment": order.order.extra,
+            "paymentMethod": order.order.payment,
+         }
+         
+          apiClient.defaults.headers.put["X-CSRFTOKEN"] = Cookies.get("csrftoken");
+          const response = await apiClient.put("/orders/"+order.id, data);
+          console.log('here',response)
 
         }
         catch (err) {
             const response = err.response
+            console.log(response)
              
         }
   }
