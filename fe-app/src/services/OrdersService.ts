@@ -6,6 +6,7 @@ import Coordinates from '@/models/Coordinates'
 import TaskVolunteer from '@/models/TaskVolunteer'
 import Product from '@/models/Product';
 import TasksVolunteerResponse from '@/models/TasksVolunteerResponse';
+import ProductsResponse from "@/models/ProductsResponse";
 import BoomerOrders from '@/store/modules/boomerOrders';
 
 interface APIOrderBody {
@@ -107,6 +108,26 @@ export default class OrdersService {
     catch (err) {
       const response = err.response;
       return new TasksVolunteerResponse(false, response.status, null);
+    }
+  }
+
+  public async getOrderDetails(orderId: String): Promise<ProductsResponse> {
+    try { 
+      if(!orderId)
+        throw new Error("No order id");
+      const response = await apiClient.get(`/orders/productList_${orderId}`);
+      const data = response.data;
+      const products = new Array<Product>(); 
+      for(let item of data){
+        products.push(new Product(item.name, item.productType, item.countity));
+      }
+      return new ProductsResponse(true, 408, products);
+    } catch (err) {
+      const response = err.response;
+      if (response)
+        return new ProductsResponse(false, response.status, null);
+      else return new ProductsResponse(false, 408, null);
+    
     }
   }
 }
