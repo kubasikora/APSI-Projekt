@@ -123,7 +123,7 @@ class OrderInRadius(generics.ListAPIView):
             if dist_cal <= radius and order.volunteer != str(user):
                 idx.append(order.pk)
 
-        orders = Order.objects.filter(id__in=idx)
+        orders = Order.objects.filter(id__in=idx,status="created")
         return orders
 
 class AssignedOrders(generics.ListCreateAPIView):
