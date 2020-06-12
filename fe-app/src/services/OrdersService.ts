@@ -102,8 +102,12 @@ export default class OrdersService {
       const response = await apiClient.get('/orders/assignedOrders');
 
       const data = response.data;
-
-      return new TasksVolunteerResponse(true, response.status, []);
+      const orders = new Array<TaskVolunteer>();
+      for(let item of data){
+        orders.push(new TaskVolunteer(item.id, new Order(undefined, new Coordinates(item.coord_x, item.coord_y), item.comment, item.paymentMethod), item.boomer));
+      }
+      console.log(orders);
+      return new TasksVolunteerResponse(true, response.status, orders);
     }
     catch (err) {
       const response = err.response;

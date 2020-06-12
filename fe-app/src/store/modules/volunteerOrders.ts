@@ -7,7 +7,7 @@ import TasksVolunteerResponse from '@/models/TasksVolunteerResponse';
 export default class VolunteerOrders extends VuexModule {
     loading: Boolean = false;
     responseStatus: Number;
-    assignedTasks: TaskVolunteer[];
+    assignedTasks: TaskVolunteer[] = new Array<TaskVolunteer>();
 
     @Mutation
     setLoadingState(newLoadingState: boolean): void {
@@ -32,5 +32,6 @@ export default class VolunteerOrders extends VuexModule {
 
         console.log(response);
         this.context.commit("setAssignedTasks", response.taskArray);
+        this.assignedTasks
     }
 }
