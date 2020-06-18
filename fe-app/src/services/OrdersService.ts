@@ -47,6 +47,7 @@ export default class OrdersService {
     }
     public async getOrders(coordinates: Coordinates, distance: Number): Promise<TasksVolunteerResponse> {
         try {
+            distance = Number(distance)/1000
           const response = await apiClient.get('/orders/orderInRadius_'+coordinates.x+'_'+coordinates.y+'_'+distance);
          
           const data = response.data

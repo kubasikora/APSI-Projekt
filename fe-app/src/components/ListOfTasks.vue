@@ -17,6 +17,9 @@
               <v-card class="pa-2" tile>
                 <strong>Współrzędne:</strong>
                 <span> {{ task.order._coordinates.x + ' ' + task.order._coordinates.y }}</span>
+                <v-btn style="float:right;margin-bottom:3px"  @click="showMap(task.order._coordinates)" color="error" fab x-small >
+                <v-icon>mdi-map-search-outline</v-icon>
+              </v-btn>
               </v-card>
             </v-col>
             <v-col cols="12" style="text-align: right">
@@ -38,6 +41,27 @@
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
+                <v-dialog
+        v-model="maps"
+        max-width="50%"
+      >
+        <v-card>
+          <v-card-title class="headline">Lokalizacja potrzebującego</v-card-title>
+            <span v-if="maps">
+                <PlaceSelection :showButtons="false" :boomLocLat="coords.x" :boomLocLong='coords.y' />
+            </span>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="primary"
+              text
+              @click="maps = false"
+            >
+              OK
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
             </v-col>
           </v-row>
         </v-container>
@@ -52,22 +76,32 @@ import TaskVolunteer from "../models/TaskVolunteer";
 import { namespace } from "vuex-class";
 import Product from "../models/Product";
 import OrdersService from "../services/OrdersService";
+import PlaceSelection from "../components/PlaceSelection.vue";
+import Coordinates from "../models/Coordinates";
 
 const order = namespace("VolunteerOrders");
 @Component({
   props: {
     tasks: Array as () => TaskVolunteer[]
+  },
+  components: {
+      PlaceSelection
   }
 })
 export default class ListOfTasks extends Vue {
   @order.State
   public assignedTasks: Array<TaskVolunteer>;
-  
+  public coords : Coordinates= new Coordinates(0,0);
   getList() {
     console.log("Lista");
   }
+  showMap(coords: Coordinates){
+      this.coords = coords
+      this.maps = true
+  }
 
   public list: Boolean = false;
+  public maps: Boolean = false;
   public products: Array<Product> = new Array<Product>();
 
   async showProductsList(orderId: String) {
