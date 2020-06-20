@@ -9,5 +9,9 @@ class Profile(models.Model):
     #photo = models.ImageField(upload_to='users/%Y/%m/%d/', blank=True)
     user_type = models.TextField(max_length=4, default="BOOM")
     address = models.TextField(max_length=512, default="default address")
+
+    accumulated_rating_score = models.IntegerField(default=0)
+    number_of_ratings = models.IntegerField(default=0)
+
     def __str__(self):
         return 'Profile for user {}'.format(self.user.get_username())
