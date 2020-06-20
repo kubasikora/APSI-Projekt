@@ -7,25 +7,35 @@ import TaskVolunteer from '@/models/TaskVolunteer';
 export default class Tasks extends VuexModule {
 
     createdTasks : Array<TaskVolunteer> = []
+    distance : Number = 0
 
     @Mutation
-    setCreatedTasks(newTasks: Array<TaskVolunteer>){
+    setCreatedTasks(newTasks: Array<TaskVolunteer>):void{
         this.createdTasks = newTasks;
+    }
+    @Mutation
+    setDistance(dist: Number): void {
+        this.distance = dist
     }
     @Action
      async getCreatedOrders(distance: Number): Promise<void> {
-    //this.context.commit("setLoadingState", true);
     console.log('orders')
     const coords = this.context.rootState.BoomerOrders.newOrder.coordinates
-    console.log(this.context)
-    console.log(distance, coords)
 
     const srv: OrdersService = new OrdersService();
     //const response: TasksResponse 
     const response : TasksVolunteerResponse = await srv.getOrders(coords, distance);
-    this.context.commit("setCreatedTasks", response.taskArray);
-
-      
+    this.context.commit("setDistance", distance)
+    this.context.commit("setCreatedTasks", response.taskArray);      
     
+  }
+  @Action
+  async takeOrder(task: TaskVolunteer): Promise<void> {
+      const srv: OrdersService = new OrdersService();
+      const coords = this.context.rootState.BoomerOrders.newOrder.coordinates
+
+      const resp = await srv.assignToOrder(task);
+      const response : TasksVolunteerResponse = await srv.getOrders(coords, this.distance);
+     this.context.commit("setCreatedTasks", response.taskArray);  
   }
 }

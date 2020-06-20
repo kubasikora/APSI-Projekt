@@ -54,6 +54,8 @@ export default class PlaceSelection extends Vue {
     private drag : Boolean = true
 
      @Prop({default: true}) readonly showButtons: Boolean
+     @Prop({default: null}) readonly boomLocLat: number
+     @Prop({default: null}) readonly boomLocLong: number
     // @login.State
     // public loading: Boolean;
     @order.Action
@@ -76,6 +78,7 @@ export default class PlaceSelection extends Vue {
     
     mounted() {
        {
+         if(!this.boomLocLong)  {
        if (navigator.geolocation) {
          navigator.geolocation.getCurrentPosition(position => {
             this.center = [position.coords.latitude, position.coords.longitude];
@@ -89,6 +92,14 @@ export default class PlaceSelection extends Vue {
       });
       
   }
+         }
+         else{
+             console.log(this.boomLocLong, this.boomLocLat)
+             this.center = [this.boomLocLat, this.boomLocLong];
+            this.marker.lat = this.boomLocLat, 
+            this.marker.lng =this.boomLocLong;
+            this.setCoordinates([this.marker.lat, this.marker.lng])
+         }
 }
   }
 }

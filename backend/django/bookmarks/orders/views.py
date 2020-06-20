@@ -1,6 +1,8 @@
 import math
 from math import sqrt
 from django_filters import FilterSet
+from rest_framework.response import Response
+
 from .serializers import OrderSerializer, ProductSerializer
 from .models import Order, Product
 from rest_framework import generics
@@ -69,6 +71,25 @@ class ProductList(generics.ListCreateAPIView):
         orderPK = self.kwargs.get(self.lookup_url_kwarg_orderPk)
         productList = Product.objects.filter(order__in=orderPK)
         return productList
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        results = Product.objects.all()
+        output_serializer = ProductSerializer(results, many=True)
+        data = output_serializer.data[:]
+        return Response(data)
+
+class ProductListDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_url_kwarg_orderPk = "orderPK"
+    lookup_url_kwarg_PK = "pk"
+    def get_queryset(self):
+        orderPK = self.kwargs.get(self.lookup_url_kwarg_orderPk)
+        productPK = self.kwargs.get(self.lookup_url_kwarg_PK)
+        product = Product.objects.filter(id__in=productPK, order__in=orderPK)
+        return product
 
 #Wyszukuje ordersy w odleglosci przekazanej jako parametr od lokalizacji wolontariusza
 class OrderInRadius(generics.ListAPIView):
@@ -109,7 +130,7 @@ class OrderInRadius(generics.ListAPIView):
             if dist_cal <= radius and order.volunteer != str(user):
                 idx.append(order.pk)
 
-        orders = Order.objects.filter(id__in=idx)
+        orders = Order.objects.filter(id__in=idx,status="created")
         return orders
 
 class AssignedOrders(generics.ListCreateAPIView):

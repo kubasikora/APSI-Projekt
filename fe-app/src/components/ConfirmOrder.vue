@@ -13,7 +13,8 @@
             active
           >
             <v-list-item-content>
-              <v-list-item-title v-text="product.description"></v-list-item-title>
+              <v-list-item-title v-text="product.name"></v-list-item-title>
+              <v-list-item-subtitle v-text="product.countity"></v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-divider  :key="i"/>

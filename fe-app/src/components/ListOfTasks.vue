@@ -1,35 +1,67 @@
 <template>
-  <v-expansion-panels
-    :hover="true">
-
-    <v-expansion-panel v-for="task in tasks" :key="task.listID">
+  <v-expansion-panels :hover="true">
+    <v-expansion-panel v-for="task in assignedTasks" :key="task.id">
       <v-expansion-panel-header>
         <span class="icon">
           <v-icon>mdi-account</v-icon>
         </span>
-        <span class="boomer-name"><strong>{{ task.name }}</strong></span>
+        <span class="boomer-name">
+          <strong>{{ task.boomer }}</strong>
+        </span>
       </v-expansion-panel-header>
 
       <v-expansion-panel-content>
         <v-container>
           <v-row>
-            <v-col>
+            <v-col cols="12">
               <v-card class="pa-2" tile>
-                <strong>Adres: </strong>
-                <span>{{ task.residence.street + ' ' + task.residence.homeNumber }}</span>
-                <span v-if="task.residence.aptNumber">{{ '/' + task.residence.aptNumber }}</span>
+                <strong>Współrzędne:</strong>
+                <span> {{ task.order._coordinates.x + ' ' + task.order._coordinates.y }}</span>
+                <v-btn style="float:right;margin-bottom:3px"  @click="showMap(task.order._coordinates)" color="error" fab x-small >
+                <v-icon>mdi-map-search-outline</v-icon>
+              </v-btn>
               </v-card>
             </v-col>
-            <v-col>
-              <v-card class="pa-2" tile><strong>Numer telefonu:</strong> {{ task.phoneNumber }}</v-card>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-card class="pa-2" tile><strong>Data dostarczenia:</strong> {{ task.due }}</v-card>
-            </v-col>
-            <v-col>
-              <v-btn color="accent" v-on:click="getList(task.listID)">Zobacz listę</v-btn>
+            <v-col cols="12" style="text-align: right">
+              <v-dialog v-model="list" persistent max-width="40%">
+                  <template v-slot:activator="{ on }">
+                    <v-btn color="accent" @click="showProductsList(task.id)" v-on="on">Zobacz listę</v-btn>
+                  </template>
+                  <v-card>
+                    <v-card-title class="headline">Szczegóły zamówienia</v-card-title>
+                    <v-card-text>
+                      <p style="font-size: 20px; font-weight: bold">Lista produktów: </p>
+                      <span v-for="product in products" v-bind:key="product.name">
+                        <p style="font-size: 18px">{{ product.name }} : {{ product.countity }}</p>
+                      </span>
+                    </v-card-text>
+                    <v-card-actions style="text-align: right">
+                      <v-spacer></v-spacer>
+                      <v-btn color="info" text @click="list = false">Ukryj</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+                <v-dialog
+        v-model="maps"
+        max-width="50%"
+      >
+        <v-card>
+          <v-card-title class="headline">Lokalizacja potrzebującego</v-card-title>
+            <span v-if="maps">
+                <PlaceSelection :showButtons="false" :boomLocLat="coords.x" :boomLocLong='coords.y' />
+            </span>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="primary"
+              text
+              @click="maps = false"
+            >
+              OK
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
             </v-col>
           </v-row>
         </v-container>
@@ -40,15 +72,44 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { Boomer } from "src/models/TaskInterface";
+import TaskVolunteer from "../models/TaskVolunteer";
+import { namespace } from "vuex-class";
+import Product from "../models/Product";
+import OrdersService from "../services/OrdersService";
+import PlaceSelection from "../components/PlaceSelection.vue";
+import Coordinates from "../models/Coordinates";
 
+const order = namespace("VolunteerOrders");
 @Component({
   props: {
-    tasks: Array as () => Boomer[],
+    tasks: Array as () => TaskVolunteer[]
+  },
+  components: {
+      PlaceSelection
   }
 })
 export default class ListOfTasks extends Vue {
-    
+  @order.State
+  public assignedTasks: Array<TaskVolunteer>;
+  public coords : Coordinates= new Coordinates(0,0);
+  getList() {
+    console.log("Lista");
+  }
+  showMap(coords: Coordinates){
+      this.coords = coords
+      this.maps = true
+  }
+
+  public list: Boolean = false;
+  public maps: Boolean = false;
+  public products: Array<Product> = new Array<Product>();
+
+  async showProductsList(orderId: String) {
+    this.products = new Array<Product>();
+    const os = new OrdersService();
+    const response = await os.getOrderDetails(orderId);
+    this.products = response.products;
+  }
 }
 </script>
 
@@ -59,7 +120,7 @@ export default class ListOfTasks extends Vue {
 
 .mdi::before {
   color: #5b5f97;
-}  
+}
 
 .boomer-name {
   font-size: 1.2rem;
@@ -68,7 +129,7 @@ export default class ListOfTasks extends Vue {
 }
 
 .v-expansion-panel--active > .v-expansion-panel-header {
-  background-color: #b8b8d1;  
+  background-color: #b8b8d1;
   color: #fff;
 }
 
@@ -79,5 +140,4 @@ export default class ListOfTasks extends Vue {
 .v-expansion-panel--active > .v-expansion-panel-header .boomer-name {
   color: #fff;
 }
-
 </style>
