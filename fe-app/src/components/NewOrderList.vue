@@ -39,7 +39,7 @@
             <template   v-for="(product, i) in productList">
           <v-list-item
           color="primary"
-            :key="i"
+            :key="'new'+i"
             active
           >
             <v-list-item-icon>

@@ -57,6 +57,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { namespace } from "vuex-class";
+import Cookies from "js-cookie";
 
 import RegistrationData from "../models/RegistrationData";
 const register = namespace("Registration");
@@ -89,16 +90,19 @@ export default class RegistrationForm extends Vue {
 
     @register.Action
     public resetData: () => void;
-@register.Action
-  public registerNewAccount: () => Promise<boolean>
+  
+    @register.Action
+    public registerNewAccount: () => Promise<boolean>
  
-  public async createNewAccount(): Promise<void> {
-    this.setRole(this.role)
-    const response = await this.registerNewAccount();
-    if(response){
-      this.$router.push({name: "New account"});
+    public async createNewAccount(): Promise<void> {
+      this.setRole(this.role)
+      Cookies.remove("csrftoken");
+      Cookies.remove("sessionID");
+      const response = await this.registerNewAccount();
+      if(response){
+        this.$router.push({name: "New account"});
+      }
     }
-  }
 
     public cancelRegistration(): void {
        this.resetData();
