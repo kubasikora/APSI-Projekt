@@ -19,7 +19,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ('date_of_birth', 'user_type', 'address', 'orders')
+        fields = ('date_of_birth', 'user_type', 'address', 'orders', 'accumulated_rating_score', 'number_of_ratings')
         #fields = ('user_type', 'date_of_birth', 'username', 'password', 'user', 'address')
         #fields = ('user_type', 'date_of_birth', 'user', 'address')
 
