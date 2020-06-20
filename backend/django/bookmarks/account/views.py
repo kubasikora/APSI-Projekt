@@ -59,3 +59,19 @@ class MyProfile2(views.APIView):
         me.delete()
         logout(request)
         return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+class Rate(views.APIView):
+    def put(self, request):
+        rating_score = request.data.get("rating")
+        id = request.data.get("id")
+        print(id)
+        me = User.objects.get(id=id)
+        serializer = UserSerializer(me, data = {}, partial = True)
+        if serializer.is_valid():
+            serializer.data["profile"]["accumulated_rating_score"] += rating_score
+            serializer.data["profile"]["number_of_ratings"] += 1
+            serializer2 = UserSerializer(me, data=serializer.data, partial=True)
+            if serializer2.is_valid():
+                serializer2.save()
+                return Response(serializer2.data)
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)
