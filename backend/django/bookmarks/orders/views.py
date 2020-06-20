@@ -3,7 +3,7 @@ from math import sqrt
 from django_filters import FilterSet
 from rest_framework.response import Response
 
-from .serializers import OrderSerializer, ProductSerializer
+from .serializers import OrderSerializer, ProductSerializer, OrderWithBoomerSerializer
 from .models import Order, Product
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
@@ -134,7 +134,7 @@ class OrderInRadius(generics.ListAPIView):
         return orders
 
 class AssignedOrders(generics.ListCreateAPIView):
-    serializer_class = OrderSerializer
+    serializer_class = OrderWithBoomerSerializer
     def get_queryset(self):
         user = self.request.user.profile
         return Order.objects.filter(volunteer=user, status="accepted")

@@ -4,16 +4,29 @@
       <v-row>
         <v-col cols="12">
           <div class="action-button">
-            <v-btn block x-large color="secondary" v-on:click="goToFindYourBoomer()">Znajdź potrzebujących w okolicy</v-btn>
+            <v-btn fab x-large color="primary" v-on:click="goToFindYourBoomer()">
+              <v-icon>mdi-map-marker-plus-outline</v-icon>
+            </v-btn>
+            <strong
+              style="margin-left:20px; font-size: 24px"
+              v-on:click="goToFindYourBoomer()"
+            >Znajdź nowe zlecenie</strong>
           </div>
 
-          <v-divider></v-divider>
-          <div class="list-title">Twoje zlecenia</div>
-          <v-divider></v-divider>
+          <v-card outlined>
+            <v-container>
+              <v-row>
+                <v-col cols="12">
+                  <div class="list-title">Twoje zlecenia</div>
+                  <v-divider></v-divider>
 
-          <div class="task-list">
-            <ListOfTasks></ListOfTasks>
-          </div>
+                  <div class="task-list">
+                    <ListOfTasks></ListOfTasks>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -27,7 +40,6 @@ import ListOfTasks from "@/components/ListOfTasks.vue";
 import { Boomer } from "../models/TaskInterface";
 import { namespace } from "vuex-class";
 
-
 const order = namespace("VolunteerOrders");
 @Component({
   components: {
@@ -36,14 +48,12 @@ const order = namespace("VolunteerOrders");
   }
 })
 export default class VolunteerLandingPageView extends Vue {
-
-  @order.Action 
+  @order.Action
   public getTasksList: () => void;
-
 
   mounted() {
     this.getTasksList();
-  }  
+  }
 
   // TODO: do zrobienia jak bedzie dostepne API
   getList(id: number) {
@@ -51,12 +61,16 @@ export default class VolunteerLandingPageView extends Vue {
   }
 
   goToFindYourBoomer() {
-    this.$router.push({path: '/v/findNewOrder'});
+    this.$router.push({ path: "/v/findNewOrder" });
   }
 }
 </script>
 
 <style scoped>
+.action-button {
+  margin-bottom: 20px;
+}
+
 .v-btn:not(.v-btn--round).v-size--x-large {
   min-height: 8rem;
   font-size: 2rem;
@@ -71,7 +85,7 @@ export default class VolunteerLandingPageView extends Vue {
   text-align: center;
   font-size: 2rem;
   font-weight: 500;
-  color: #5b5f97;
+  /* color: #5b5f97; */
 }
 
 .task-list {

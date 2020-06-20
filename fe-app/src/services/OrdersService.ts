@@ -65,7 +65,7 @@ export default class OrdersService {
       })
       console.log('tasks', tasksArray)
 
-      return new TasksVolunteerResponse(true, response.status, tasksArray);
+      return new TasksVolunteerResponse(true, response.status, tasksArray.reverse());
     } catch (err) {
       const response = err.response;
       return new TasksVolunteerResponse(false, response.status, null);
@@ -121,8 +121,7 @@ export default class OrdersService {
       for (let item of data) {
         orders.push(new TaskVolunteer(item.id, new Order(undefined, new Coordinates(item.coord_x, item.coord_y), item.comment, item.paymentMethod), item.boomer));
       }
-      console.log(orders);
-      return new TasksVolunteerResponse(true, response.status, orders);
+      return new TasksVolunteerResponse(true, response.status, orders.reverse());
     }
     catch (err) {
       const response = err.response;
