@@ -83,6 +83,13 @@ class ProductList(generics.ListCreateAPIView):
 class ProductListDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    lookup_url_kwarg_orderPk = "orderPK"
+    lookup_url_kwarg_PK = "pk"
+    def get_queryset(self):
+        orderPK = self.kwargs.get(self.lookup_url_kwarg_orderPk)
+        productPK = self.kwargs.get(self.lookup_url_kwarg_PK)
+        product = Product.objects.filter(id__in=productPK, order__in=orderPK)
+        return product
 
 #Wyszukuje ordersy w odleglosci przekazanej jako parametr od lokalizacji wolontariusza
 class OrderInRadius(generics.ListAPIView):
@@ -131,15 +138,6 @@ class AssignedOrders(generics.ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user.profile
         return Order.objects.filter(volunteer=user, status="accepted")
-
-class AssignOrder(generics.ListCreateAPIView):
-    serializer_class = OrderSerializer
-    lookup_url_kwarg_orderPk = "orderPK"
-    def get_queryset(self):
-        user = self.request.user.profile
-        orderPK = self.kwargs.get(self.lookup_url_kwarg_orderPk)
-        if (user.user_type == "vol"):
-            Order.objects.filter(id__in=orderPK).update(volunteer=user, status='accepted')
 
 class CreatedOrders(generics.ListCreateAPIView):
     serializer_class = OrderSerializer
