@@ -136,6 +136,28 @@ export default class OrdersService {
     }
   }
 
+  public async getDoneOrders(): Promise<Array<Order>> {
+    try {
+      const doneOrders = await apiClient.get("/orders/doneOrders");
+
+      const orders = doneOrders.data.map(async (order: any) => {
+        const productList = await apiClient.get(`/orders/productList_${order.id}`);
+        const products = productList.data.map((product: any) => {
+          const newProduct = new Product(product.name, product.productType, product.countity)
+          newProduct.isBought = product.isBought;
+          return newProduct;
+        });
+        const finishedOrder = new Order(products, new Coordinates(order.coord_x, order.coord_y), order.comment, order.paymentMethod);
+        finishedOrder.id = order.id;
+        finishedOrder.status = order.status;
+        return finishedOrder;
+      });
+      return Promise.all(orders.reverse());
+    } catch(err){
+      return new Array<Order>();
+    }
+  }
+
   public async getFullOrder(orderId: String): Promise<Order> {
     try {
       const fullOrder = await apiClient.get(`/orders/${orderId}`);
