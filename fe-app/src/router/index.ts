@@ -59,6 +59,13 @@ const routes = [
     name: "Find new order",
     component: () => import("@/views/FindYourBoomerPage.vue"),
     meta: { requiresAuth: true, requiredRole: Role.Volunteer }
+  },
+  {
+    path: "/b/summary/:orderId",
+    name: "Finish order",
+    component: () => import("@/views/BoomerOrderSummary.vue"),
+    props: true,
+    meta: { requiresAuth: true, requiredRole: Role.Boomer }
   }
 ];
 

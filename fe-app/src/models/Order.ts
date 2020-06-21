@@ -39,7 +39,7 @@ export default class Order {
         this._products.push(newproduct)
     }
 
-  
+    public id: String;
     private _products: Array<Product>;
     private _coordinates: Coordinates;
     private _extra: String

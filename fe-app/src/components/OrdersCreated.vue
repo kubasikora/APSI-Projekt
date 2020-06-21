@@ -64,6 +64,11 @@
                     </v-list-item-group>
                   </v-list>
                 </v-card>
+              </v-col>            
+            </v-row>
+            <v-row>
+              <v-col cols="12" style="text-align: right">
+                <v-btn @click="$router.push({path: `/b/summary/${order.id}`})" color="accent">Potwierdź wykonanie</v-btn>
               </v-col>
             </v-row>
           </v-container>

@@ -83,7 +83,9 @@ export default class OrdersService {
           newProduct.isBought = product.isBought;
           return newProduct;
         });
-        return new Order(products, new Coordinates(order.coord_x, order.coord_y), order.comment, order.paymentMethod)
+        const createdOrder = new Order(products, new Coordinates(order.coord_x, order.coord_y), order.comment, order.paymentMethod);
+        createdOrder.id = order.id;
+        return createdOrder;
       });
       return Promise.all(orders.reverse());
     } catch(err){
@@ -130,6 +132,22 @@ export default class OrdersService {
     catch (err) {
       const response = err.response;
       return new TasksVolunteerResponse(false, response.status, null);
+    }
+  }
+
+  public async getFullOrder(orderId: String): Promise<Order> {
+    try {
+      const fullOrder = await apiClient.get(`/orders/${orderId}`);
+      const order = fullOrder.data;
+      const productList = await apiClient.get(`/orders/productList_${order.id}`);
+      const products = productList.data.map((product: any) => {
+          const newProduct = new Product(product.name, product.productType, product.countity)
+          newProduct.isBought = product.isBought;
+          return newProduct;
+        });
+      return new Order(products, new Coordinates(order.coord_x, order.coord_y), order.comment, order.paymentMethod);
+    } catch(err){
+      return new Order([], new Coordinates(0,0), "", "");
     }
   }
 
