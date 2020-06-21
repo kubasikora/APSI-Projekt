@@ -35,6 +35,7 @@ class OrderWithBoomerSerializer(serializers.ModelSerializer):
     # Jesli chcemy zwrocic przetworzone dane z bazy to robimy to w ten sposob:
     # tworzenie zmiennej boomer tutaj i zamiana jej wartosci na nazwe uztykownika (a nie id uzytkownika)
     boomer = serializers.ReadOnlyField(source='boomer.user.username')
+    boomer_id = serializers.ReadOnlyField(source='boomer.user.id')
     class Meta:
         model = Order
         # fields = ('id','coord_x', 'coord_y', 'description', 'boomer', 'volunteer')

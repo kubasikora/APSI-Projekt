@@ -22,10 +22,10 @@
                 <span>{{ task.order._extra.length == 0 ? ' brak' : task.order._extra }}</span>
               </v-card>
             </v-col>
-            <v-card-actions>
+            <v-card-actions style="width: 100%">
               <v-dialog v-model="list" persistent max-width="40%">
                 <template v-slot:activator="{ on }">
-                  <v-btn color="accent" @click="showProductsList(task.id)" v-on="on">Zobacz listę</v-btn>
+                  <v-btn :disabled="task.order.status == 'done'" color="accent" @click="showProductsList(task.id)" v-on="on">Zobacz listę</v-btn>
                 </template>
                 <v-card>
                   <v-card-title class="headline">Szczegóły zamówienia</v-card-title>
@@ -67,6 +67,31 @@
               >
                 <v-icon>mdi-map-search-outline</v-icon>
               </v-btn>
+              <div style="text-align: right; margin-left:auto">
+                <v-dialog v-model="showSummary" persistent max-width="40%">
+                <v-card>
+                  <v-card-title class="headline">Realizacja zamówienia</v-card-title>
+                  <v-card-text>
+                    Jak oceniasz potrzebującego?
+                    <v-radio-group v-model="radioGroup">
+                      <v-radio v-for="n in 5" :key="n" :label="`${n}`" :value="n"></v-radio>
+                    </v-radio-group>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="accent" text @click="setRating(task.order)">Oceń</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+
+              <v-btn
+                :disabled="task.order.status != 'done'"
+                @click="showSummary = true"
+                color="error"
+              >
+                Zakończ zamówienie
+              </v-btn>
+              </div>
             </v-card-actions>
           </v-row>
         </v-container>
@@ -83,6 +108,8 @@ import Product from "../models/Product";
 import OrdersService from "../services/OrdersService";
 import PlaceSelection from "../components/PlaceSelection.vue";
 import Coordinates from "../models/Coordinates";
+import ProfileService from "../services/ProfileService";
+import Order from "../models/Order";
 
 const order = namespace("VolunteerOrders");
 @Component({
@@ -97,6 +124,8 @@ export default class ListOfTasks extends Vue {
   @order.State
   public assignedTasks: Array<TaskVolunteer>;
   public coords: Coordinates = new Coordinates(0, 0);
+  public showSummary: Boolean = false;
+  public radioGroup: Number = 3;
 
   getList() {
     console.log("Lista");
@@ -123,6 +152,17 @@ export default class ListOfTasks extends Vue {
     const response = await os.getOrderDetails(orderId);
     this.products = response.products;
     console.log(this.products);
+  }
+
+  public async setRating(order: Order) {
+    console.log(order);
+    const ps = new ProfileService();
+    await ps.setRating(order.boomerId, this.radioGroup);
+    this.showSummary = false;
+
+    const os = new OrdersService();
+    const response = await os.markOrderAsFinished(order);
+    this.$router.go();
   }
 }
 </script>

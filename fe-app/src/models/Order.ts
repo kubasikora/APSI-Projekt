@@ -43,6 +43,8 @@ export default class Order {
     public volunteerId: String;
     public status: String;
     public id: String;
+    public boomer: String;
+    public boomerId: String;
     private _products: Array<Product>;
     private _coordinates: Coordinates;
     private _extra: String

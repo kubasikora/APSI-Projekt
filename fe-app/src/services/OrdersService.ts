@@ -126,7 +126,14 @@ export default class OrdersService {
       const data = response.data;
       const orders = new Array<TaskVolunteer>();
       for (let item of data) {
-        orders.push(new TaskVolunteer(item.id, new Order(undefined, new Coordinates(item.coord_x, item.coord_y), item.comment, item.paymentMethod), item.boomer));
+        console.log(item);
+        const order = new Order(undefined, new Coordinates(item.coord_x, item.coord_y), item.comment, item.paymentMethod);
+        order.status = item.status;
+        order.boomerId = item.boomer_id;
+        order.id = item.id;
+        const task = new TaskVolunteer(item.id, order, item.boomer);
+        console.log(task);
+        orders.push(task);
       }
       return new TasksVolunteerResponse(true, response.status, orders.reverse());
     }
@@ -201,7 +208,29 @@ export default class OrdersService {
       const me = await apiClient.get("/account/me");
       const data = {
         "status": "done",
-        "volunteer": Number(me.data.profile.id),
+        "coord_x": order.coordinates.x,
+        "coord_y": order.coordinates.y,
+        "comment": order.extra,
+        "paymentMethod": order.payment,
+      }
+
+      apiClient.defaults.headers.put["X-CSRFTOKEN"] = Cookies.get("csrftoken");
+      const response = await apiClient.put("/orders/" + order.id, data);
+      console.log('here', response)
+    }
+    catch (err) {
+      const response = err.response
+      console.log(response)
+
+    }
+  }
+
+  public async markOrderAsFinished(order: Order): Promise<void> {
+    try {
+      apiClient.defaults.headers.get["X-CSRFTOKEN"] = Cookies.get("csrftoken");
+      const me = await apiClient.get("/account/me");
+      const data = {
+        "status": "finished",
         "coord_x": order.coordinates.x,
         "coord_y": order.coordinates.y,
         "comment": order.extra,

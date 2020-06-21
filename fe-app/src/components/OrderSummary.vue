@@ -66,7 +66,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import OrderService from "../services/OrdersService";
+import OrdersService from "../services/OrdersService";
 import Order from "../models/Order";
 import Profile from "../models/Profile";
 import ProfileService from "../services/ProfileService";
@@ -96,7 +96,7 @@ export default class OrderSummary extends Vue {
 
   public async finishOrder(order: Order) {
     console.log(order);
-    const os = new OrderService();
+    const os = new OrdersService();
     const response = await os.markOrderAsCompleted(order);
     this.showConfirmation = true;
   }
