@@ -101,7 +101,7 @@ export default class OrdersService {
       const data = {
         "status": "accepted",
         "volunteer": Number(me.data.profile.id),
-        "boomer": order.boomer,
+        // "boomer": order.boomer,
         "coord_x": order.order.coordinates.x,
         "coord_y": order.order.coordinates.y,
         "comment": order.order.extra,

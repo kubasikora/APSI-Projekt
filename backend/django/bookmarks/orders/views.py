@@ -3,7 +3,7 @@ from math import sqrt
 from django_filters import FilterSet
 from rest_framework.response import Response
 
-from .serializers import OrderSerializer, ProductSerializer,LimitedProductSerializer, OrderWithBoomerSerializer
+from .serializers import OrderSerializer, BasicOrderSerializer,ProductSerializer,LimitedProductSerializer, OrderWithBoomerSerializer
 from .models import Order, Product
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
@@ -60,7 +60,7 @@ class OrderList(generics.ListCreateAPIView):
 
 class OrderDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Order.objects.all()
-    serializer_class = OrderSerializer
+    serializer_class = BasicOrderSerializer
 
 class ProductDetailChecker(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()

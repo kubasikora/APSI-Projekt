@@ -7,6 +7,14 @@ class VolunteerSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
+class BasicOrderSerializer(serializers.ModelSerializer):
+    # Jesli chcemy zwrocic przetworzone dane z bazy to robimy to w ten sposob:
+    # tworzenie zmiennej boomer tutaj i zamiana jej wartosci na nazwe uztykownika (a nie id uzytkownika)
+    class Meta:
+        model = Order
+        #fields = ('id','coord_x', 'coord_y', 'comment', 'status', 'boomer', 'volunteer', 'volunteer_name')
+        fields = '__all__'
+
 class OrderSerializer(serializers.ModelSerializer):
     # Jesli chcemy zwrocic przetworzone dane z bazy to robimy to w ten sposob:
     # tworzenie zmiennej boomer tutaj i zamiana jej wartosci na nazwe uztykownika (a nie id uzytkownika)

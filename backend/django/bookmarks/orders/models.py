@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 STATUS_CHOICES = [
     ("created", "created"),
     ("accepted", "accepted"),
-    ("done", "done"),
+    ("done", "done"), # done jest po zamknieciu przez boomera
+    ("finished", "finished") # fnished jest po zamknieciu przez boomera i potem volunteera
 ]
 
 # Create your models here.
