@@ -1,0 +1,4 @@
+JESTEŚMY TUTAJ BY POMÓC TOBIE I TWOIM BLISKIM!!!
+Stworzona aplikacja o nazwie Helpado jest systemem umożliwiającym udzielenie pomocy osobom potrzebującym poprzez wykonanie dla nich zakupów. 
+Pomysł na aplikację narodził się z analizy potrzeb starszego i chorego społeczeństwa w obliczu pandemii, 
+aby ułatwić im codzienne funkcjonowanie i zapewnić bezpieczeństwo w tych trudnych czasach.
