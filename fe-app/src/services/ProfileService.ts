@@ -70,4 +70,18 @@ export default class ProfileService {
       else return new ProfileResponse(false, 408, null);
     }
   }
+
+  public async setRating(userId: String, rating: Number): Promise<void> {
+    try {
+      apiClient.defaults.headers.put["X-CSRFTOKEN"] = Cookies.get("csrftoken");
+      const data = {
+        "id": userId,
+        "rating": rating
+      };
+      await apiClient.put("/account/rate", data);
+    } catch(err) {
+      console.log(err);
+    }
+      
+  }
 }

@@ -40,6 +40,7 @@ export default class Order {
     }
 
     public volunteer: String;
+    public volunteerId: String;
     public status: String;
     public id: String;
     private _products: Array<Product>;

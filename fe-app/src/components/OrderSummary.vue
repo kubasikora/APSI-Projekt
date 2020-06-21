@@ -35,15 +35,31 @@
         </v-list>
       </v-card>
 
-    <v-card-actions>
+      <v-card-actions>
         <v-container>
-        <v-row>
-              <v-col cols="12" style="text-align: right">
-                <v-btn @click="$router.push({path: `/b/summary/${order.id}`})" color="accent">Zamknij zlecenie</v-btn>
-              </v-col>
-            </v-row>
+          <v-row>
+            <v-col cols="12" style="text-align: right">
+              <v-dialog v-model="showConfirmation" persistent max-width="40%">
+                <v-card>
+                  <v-card-title class="headline">Realizacja zamówienia</v-card-title>
+                  <v-card-text>
+                    Jak oceniasz zamówienie?
+                    <v-radio-group v-model="radioGroup">
+                      <v-radio v-for="n in 5" :key="n" :label="`${n}`" :value="n"></v-radio>
+                    </v-radio-group>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="accent" text @click="setRating(order)">Oceń</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+
+              <v-btn @click="finishOrder(order)" color="accent">Zamknij zlecenie</v-btn>
+            </v-col>
+          </v-row>
         </v-container>
-    </v-card-actions>
+      </v-card-actions>
     </v-card-text>
   </v-card>
 </template>
@@ -52,10 +68,14 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import OrderService from "../services/OrdersService";
 import Order from "../models/Order";
+import Profile from "../models/Profile";
+import ProfileService from "../services/ProfileService";
 
 @Component
 export default class OrderSummary extends Vue {
   @Prop() order: Order;
+  public showConfirmation: Boolean = false;
+  public radioGroup: Number = 3;
 
   private categories = [
     { category: "Piekarnia", icon: "baguette" },
@@ -72,6 +92,21 @@ export default class OrderSummary extends Vue {
     });
     if (category) return `mdi-` + category.icon;
     else return `mdi-`;
+  }
+
+  public async finishOrder(order: Order) {
+    console.log(order);
+    const os = new OrderService();
+    const response = await os.markOrderAsCompleted(order);
+    this.showConfirmation = true;
+  }
+
+  public setRating(order: Order) {
+    const ps = new ProfileService();
+    console.log(this.radioGroup);
+    ps.setRating(order.volunteerId, this.radioGroup);
+    this.showConfirmation = false;
+    this.$router.push("/b/hello");
   }
 }
 </script>

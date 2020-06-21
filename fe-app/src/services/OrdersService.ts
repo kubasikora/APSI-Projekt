@@ -148,7 +148,9 @@ export default class OrdersService {
         });
       const newOrder = new Order(products, new Coordinates(order.coord_x, order.coord_y), order.comment, order.paymentMethod);
       newOrder.volunteer = order.volunteer_name;
+      newOrder.volunteerId = order.volunteer;
       newOrder.status = order.status;
+      newOrder.id = order.id;
       return newOrder;
     } catch(err){
       return new Order([], new Coordinates(0,0), "", "");
@@ -190,6 +192,30 @@ export default class OrdersService {
 
       await apiClient.put(`/orders/product/${product.id}`, data);
     } catch (err) {
+    }
+  }
+
+  public async markOrderAsCompleted(order: Order): Promise<void> {
+    try {
+      apiClient.defaults.headers.get["X-CSRFTOKEN"] = Cookies.get("csrftoken");
+      const me = await apiClient.get("/account/me");
+      const data = {
+        "status": "done",
+        "volunteer": Number(me.data.profile.id),
+        "coord_x": order.coordinates.x,
+        "coord_y": order.coordinates.y,
+        "comment": order.extra,
+        "paymentMethod": order.payment,
+      }
+
+      apiClient.defaults.headers.put["X-CSRFTOKEN"] = Cookies.get("csrftoken");
+      const response = await apiClient.put("/orders/" + order.id, data);
+      console.log('here', response)
+    }
+    catch (err) {
+      const response = err.response
+      console.log(response)
+
     }
   }
 }
