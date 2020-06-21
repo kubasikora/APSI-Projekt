@@ -66,6 +66,12 @@ const routes = [
     component: () => import("@/views/BoomerOrderSummary.vue"),
     props: true,
     meta: { requiresAuth: true, requiredRole: Role.Boomer }
+  },
+  {
+    path: "/b/history",
+    name: "Order History",
+    component: () => import("@/views/BoomerHistory.vue"),
+    meta: { requiresAuth: true, requiredRole: Role.Boomer }
   }
 ];
 

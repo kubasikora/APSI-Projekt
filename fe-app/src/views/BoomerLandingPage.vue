@@ -14,7 +14,7 @@
               <v-icon>mdi-heart</v-icon>
             </v-btn>
 
-            <v-btn value="nearby">
+            <v-btn value="nearby" v-on:click="goToHistory()">
               <span>Historia</span>
               <v-icon>mdi-history</v-icon>
             </v-btn>
@@ -66,6 +66,10 @@ export default class BoomerLandingPageView extends Vue {
   goToNewOrder() {
     this.$router.push({path: '/b/newOrder'});
   }  
+
+  goToHistory() {
+    this.$router.push({path: '/b/history'});
+  }
 }
 </script>
 
