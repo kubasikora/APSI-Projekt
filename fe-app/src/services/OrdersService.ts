@@ -78,7 +78,11 @@ export default class OrdersService {
       const myOrders = await apiClient.get("/orders/createdOrders");
       const orders = myOrders.data.map(async (order: any) => {
         const productList = await apiClient.get(`/orders/productList_${order.id}`);
-        const products = productList.data.map((product: any) => new Product(product.name, product.productType, product.countity));
+        const products = productList.data.map((product: any) => {
+          const newProduct = new Product(product.name, product.productType, product.countity)
+          newProduct.isBought = product.isBought;
+          return newProduct;
+        });
         return new Order(products, new Coordinates(order.coord_x, order.coord_y), order.comment, order.paymentMethod)
       });
       return Promise.all(orders.reverse());

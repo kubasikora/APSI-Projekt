@@ -147,4 +147,4 @@ class CreatedOrders(generics.ListCreateAPIView):
     serializer_class = OrderSerializer
     def get_queryset(self):
         user = self.request.user.profile
-        return Order.objects.filter(boomer=user, status="created")
+        return Order.objects.filter(boomer=user, status="created") | Order.objects.filter(boomer=user,status="accepted")

@@ -5,7 +5,7 @@
          
           v-model="distance"
           :min="10"
-          :max="3000"
+          :max="20000"
           :disabled="false"
           :readonly="false"
            :thumb-size="50"
@@ -13,7 +13,7 @@
           label="Zasięg wyszukiwania"
         >
         <template v-slot:thumb-label="{ value }">
-              {{value/1000+" km" }}
+              {{(value/1000).toFixed(2)+" km" }}
             </template></v-slider>
     
       <v-dialog

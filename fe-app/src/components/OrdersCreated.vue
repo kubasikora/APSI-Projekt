@@ -52,6 +52,13 @@
                               style="float: right; width: 50%"
                             ></v-list-item-subtitle>
                           </v-list-item-content>
+                          <v-list-item-action>
+                             <v-checkbox
+                              :input-value="product.isBought"
+                              color="accent"
+                              disabled
+                            ></v-checkbox>
+                          </v-list-item-action>
                         </v-list-item>
                       </template>
                     </v-list-item-group>
@@ -120,5 +127,9 @@ export default class OrdersCreated extends Vue {
 }
 .order-list {
   background-color: #b8b8d1;
+}
+
+.bought {
+  text-decoration: line-through solid;
 }
 </style>
