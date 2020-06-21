@@ -85,6 +85,7 @@ export default class OrdersService {
         });
         const createdOrder = new Order(products, new Coordinates(order.coord_x, order.coord_y), order.comment, order.paymentMethod);
         createdOrder.id = order.id;
+        createdOrder.status = order.status;
         return createdOrder;
       });
       return Promise.all(orders.reverse());
@@ -145,7 +146,10 @@ export default class OrdersService {
           newProduct.isBought = product.isBought;
           return newProduct;
         });
-      return new Order(products, new Coordinates(order.coord_x, order.coord_y), order.comment, order.paymentMethod);
+      const newOrder = new Order(products, new Coordinates(order.coord_x, order.coord_y), order.comment, order.paymentMethod);
+      newOrder.volunteer = order.volunteer_name;
+      newOrder.status = order.status;
+      return newOrder;
     } catch(err){
       return new Order([], new Coordinates(0,0), "", "");
     }

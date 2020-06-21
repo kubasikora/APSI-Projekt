@@ -39,6 +39,8 @@ export default class Order {
         this._products.push(newproduct)
     }
 
+    public volunteer: String;
+    public status: String;
     public id: String;
     private _products: Array<Product>;
     private _coordinates: Coordinates;

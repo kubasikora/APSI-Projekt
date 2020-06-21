@@ -63,7 +63,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { namespace } from "vuex-class";
-import Order from "@/models/Order";
+import Order from "../models/Order";
 const orders = namespace("BoomerOrders");
 
 @Component
