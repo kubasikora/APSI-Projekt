@@ -134,10 +134,14 @@ export default class OrdersService {
       if (!orderId)
         throw new Error("No order id");
       const response = await apiClient.get(`/orders/productList_${orderId}`);
+      console.log(response);
       const data = response.data;
       const products = new Array<Product>();
       for (let item of data) {
-        products.push(new Product(item.name, item.productType, item.countity));
+        const newProduct = new Product(item.name, item.productType, item.countity);
+        newProduct.isBought = item.isBought;
+        newProduct.id = item.id;
+        products.push(newProduct);
       }
       return new ProductsResponse(true, 408, products);
     } catch (err) {
@@ -145,7 +149,21 @@ export default class OrdersService {
       if (response)
         return new ProductsResponse(false, response.status, null);
       else return new ProductsResponse(false, 408, null);
+    }
+  }
 
+  public async changeProductState(product: Product): Promise<void> {
+    try {
+      if (!product.id)
+        throw new Error("No product id");
+      apiClient.defaults.headers.put["X-CSRFTOKEN"] = Cookies.get("csrftoken");
+      const data = {
+        "id": product.id,
+        "isBought": product.isBought
+      }
+
+      await apiClient.put(`/orders/product/${product.id}`, data);
+    } catch (err) {
     }
   }
 }

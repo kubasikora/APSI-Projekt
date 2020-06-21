@@ -32,7 +32,7 @@
                   <v-card-text>
                     <p style="font-size: 20px; font-weight: bold">Lista produktów:</p>
                     <span v-for="product in products" v-bind:key="product.name">
-                      <p style="font-size: 18px">{{ product.name }} : {{ product.countity }}</p>
+                      <p @click="checkProduct(product)" style="font-size: 18px" :class="{bought: product.isBought}">{{ product.name }} : {{ product.countity }}</p>
                     </span>
                   </v-card-text>
                   <v-card-actions style="text-align: right">
@@ -97,12 +97,20 @@ export default class ListOfTasks extends Vue {
   @order.State
   public assignedTasks: Array<TaskVolunteer>;
   public coords: Coordinates = new Coordinates(0, 0);
+
   getList() {
     console.log("Lista");
   }
+
   showMap(coords: Coordinates) {
     this.coords = coords;
     this.maps = true;
+  }
+  
+  checkProduct(product: Product){
+    product.isBought = !product.isBought;
+    const os = new OrdersService();
+    os.changeProductState(product);
   }
 
   public list: Boolean = false;
@@ -114,6 +122,7 @@ export default class ListOfTasks extends Vue {
     const os = new OrdersService();
     const response = await os.getOrderDetails(orderId);
     this.products = response.products;
+    console.log(this.products);
   }
 }
 </script>
@@ -144,5 +153,9 @@ export default class ListOfTasks extends Vue {
 
 .v-expansion-panel--active > .v-expansion-panel-header .boomer-name {
   color: #fff;
+}
+
+.bought {
+  text-decoration: line-through solid;
 }
 </style>

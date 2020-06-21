@@ -24,3 +24,8 @@ class OrderWithBoomerSerializer(serializers.ModelSerializer):
         model = Order
         # fields = ('id','coord_x', 'coord_y', 'description', 'boomer', 'volunteer')
         fields = '__all__'
+
+class LimitedProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ('id', 'isBought')
