@@ -1,4 +1,9 @@
 <template>
+<div>
+  <v-card style="margin-bottom: 20px">
+  <v-card-title>Twoja ocena</v-card-title>
+  <v-card-subtitle>{{ rating.toFixed(2) }} / 5.00</v-card-subtitle>
+  </v-card>
   <v-card>
     <v-form>
       <v-card-title>Moje dane</v-card-title>
@@ -43,6 +48,7 @@
       </v-card-actions>
     </v-form>
   </v-card>
+  </div>
 </template>
 
 <script lang="ts">
@@ -88,6 +94,8 @@ export default class AccountDataPanel extends Vue {
     return num.toString();
   }
 
+  public rating: Number = 0.0;
+
   async mounted(){
     await this.loadProfile();
     const date: Date = this.profile.dateOfBirth;
@@ -101,6 +109,7 @@ export default class AccountDataPanel extends Vue {
     this.lastName = this.profile.lastName;
     this.address = this.profile.address;
     this.city = this.profile.city;
+    this.rating = this.profile.rating;
   }
 
   $refs: Vue["$refs"] & {

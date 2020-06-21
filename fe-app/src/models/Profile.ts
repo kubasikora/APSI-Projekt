@@ -14,4 +14,5 @@ export default class Profile {
     readonly address: String;
     readonly city: String;
     readonly dateOfBirth: Date;
+    public rating: Number;
   };

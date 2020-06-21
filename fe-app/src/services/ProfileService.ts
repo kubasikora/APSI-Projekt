@@ -9,6 +9,7 @@ export default class ProfileService {
       const response = await apiClient.get("/account/me");
       const data = response.data.profile;
       const profile = new Profile(data.id, "Jan", "Kowalski", data.address, "Warszawa", new Date(data.date_of_birth));
+      profile.rating = data.number_of_ratings == 0 ? 0.0 : data.accumulated_rating_score / data.number_of_ratings;
       return new ProfileResponse(true, response.status, profile);
     } catch (err) {
       const response = err.response;
