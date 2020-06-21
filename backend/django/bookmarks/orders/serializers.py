@@ -23,7 +23,7 @@ class OrderSerializer(serializers.ModelSerializer):
     volunteer = serializers.ReadOnlyField(source='volunteer.user.id') 
     class Meta:
         model = Order
-        fields = ('id','coord_x', 'coord_y', 'comment', 'status', 'boomer', 'volunteer', 'volunteer_name')
+        fields = ('id','coord_x', 'coord_y', 'comment', 'status', 'boomer', 'volunteer', 'volunteer_name', 'paymentMethod')
         # fields = '__all__'
 
 class ProductSerializer(serializers.ModelSerializer):

@@ -44,9 +44,13 @@
                   <v-card-title class="headline">Realizacja zamówienia</v-card-title>
                   <v-card-text>
                     Jak oceniasz zamówienie?
-                    <v-radio-group v-model="radioGroup">
-                      <v-radio v-for="n in 5" :key="n" :label="`${n}`" :value="n"></v-radio>
-                    </v-radio-group>
+                   <v-rating
+                        v-model="radioGroup"
+                         color="yellow darken-3"
+                        background-color="grey darken-1"
+                        empty-icon="$ratingFull"
+                        hover
+                    ></v-rating>
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>

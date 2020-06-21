@@ -106,6 +106,7 @@ export default class OrdersDone extends Vue {
   ];
 
   private statuses = [
+    { status: "finished", icon: "mdi-alert-circle-check", name: "Zakończone" },
     { status: "done", icon: "mdi-alert-circle-check", name: "Zakończone" },
     { status: "accepted", icon: "mdi-alert-circle-outline", name: "Przyjęte" },
     { status: "created", icon: "mdi-creation", name: "Złożone" }

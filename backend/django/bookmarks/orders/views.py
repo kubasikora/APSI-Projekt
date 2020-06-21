@@ -153,4 +153,4 @@ class DoneOrders(generics.ListCreateAPIView):
     serializer_class = OrderSerializer
     def get_queryset(self):
         user = self.request.user.profile
-        return Order.objects.filter(boomer=user, status="done")
+        return Order.objects.filter(boomer=user, status__in=["done", "finished"])

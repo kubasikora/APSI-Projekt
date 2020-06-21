@@ -73,9 +73,13 @@
                   <v-card-title class="headline">Realizacja zamówienia</v-card-title>
                   <v-card-text>
                     Jak oceniasz potrzebującego?
-                    <v-radio-group v-model="radioGroup">
-                      <v-radio v-for="n in 5" :key="n" :label="`${n}`" :value="n"></v-radio>
-                    </v-radio-group>
+                     <v-rating
+                        v-model="radioGroup"
+                         color="yellow darken-3"
+                        background-color="grey darken-1"
+                        empty-icon="$ratingFull"
+                        hover
+                    ></v-rating>
                   </v-card-text>
                   <v-card-actions>
                     <v-spacer></v-spacer>
@@ -151,7 +155,7 @@ export default class ListOfTasks extends Vue {
     const os = new OrdersService();
     const response = await os.getOrderDetails(orderId);
     this.products = response.products;
-    console.log(this.products);
+    console.log('products',this.products);
   }
 
   public async setRating(order: Order) {

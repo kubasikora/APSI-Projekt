@@ -17,6 +17,7 @@ interface APIOrderBody {
 }
 export default class OrdersService {
   public async addOrder(newOrder: Order): Promise<OrderResponse> {
+      console.log('order',newOrder)
     try {
       const data: APIOrderBody = {
         coord_x: newOrder.coordinates.x,
@@ -24,6 +25,7 @@ export default class OrdersService {
         comment: newOrder.extra,
         paymentMethod: newOrder.payment
       };
+      console.log(data)
       apiClient.defaults.headers.post["X-CSRFTOKEN"] = Cookies.get("csrftoken");
       const response = await apiClient.post("/orders/", data);
       const id = response.data.id
